@@ -1,0 +1,11 @@
+.form-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+div.form-wrapper.mat-form-field {
+  width: 75%;
+  margin-top: 25px;
+}

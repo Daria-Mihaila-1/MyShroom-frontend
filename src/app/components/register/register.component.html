@@ -1,0 +1,34 @@
+
+<form [formGroup]="userCredentialsFormGroup" (ngSubmit)="registerUser()">
+  <div class="form-wrapper">
+    <mat-form-field appearance="outline">
+      <mat-label>First Name</mat-label>
+      <input matInput placeholder="Enter your first name" formControlName="firstName">
+      <mat-error *ngIf="this.userCredentialsFormGroup.controls['firstName'].invalid">nu merge username </mat-error>
+      <mat-hint>Type your first name</mat-hint>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Last Name</mat-label>
+      <input matInput placeholder="Enter your last name" formControlName="lastName">
+      <mat-error *ngIf="this.userCredentialsFormGroup.controls['lastName'].invalid">nu merge username </mat-error>
+      <mat-hint>Type your last name</mat-hint>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+    <mat-label>Username</mat-label>
+    <input matInput placeholder="Enter your desired username" formControlName="userName">
+    <mat-error *ngIf="this.userCredentialsFormGroup.controls['userName'].invalid">nu merge username </mat-error>
+    <mat-hint>Type your username</mat-hint>
+  </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Password</mat-label>
+      <input matInput [type]="hide ? 'password' : 'text'" placeholder="Enter your password" formControlName="password">
+      <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+      <mat-error *ngIf="this.userCredentialsFormGroup.controls['password'].invalid">nu merge passwd</mat-error>
+      <mat-hint>Type your password</mat-hint>
+    </mat-form-field>
+  </div>
+  <div class="button-wrapper">
+    <button mat-raised-button type="submit">Register</button>
+  </div>
+</form>
