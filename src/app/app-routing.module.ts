@@ -9,7 +9,7 @@ import {AuthguardService} from "./services/authguard.service";
 const routes: Routes =  [
   {path:'login',component:LoginComponent},
   {path:'register',component:RegisterComponent},
-  {path:'landing_page', component:LandingPageComponent, canActivate:[AuthguardService]},
+  {path:'landing-page', component:LandingPageComponent,canActivate:[AuthguardService]},
   {path:"**", redirectTo:'login'}
 ]
 

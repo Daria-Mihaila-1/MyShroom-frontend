@@ -1,0 +1,21 @@
+.preview {
+  max-width: 200px;
+}
+
+mat-dialog-content{
+  width: 600px;
+  height: 500px;
+
+}
+
+.file-input {
+  display: none;
+}
+
+.drop-zone {
+  border: #ccc dashed 2px;
+  padding: 20px 10px;
+  box-sizing: border-box;
+  margin-top: 15px;
+  display: flex;
+}

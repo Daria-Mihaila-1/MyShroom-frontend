@@ -1,0 +1,24 @@
+
+<h1 mat-dialog-title>Insert file here</h1>
+<mat-dialog-content>
+  <label>Choose an image</label>
+
+    <div  ngx-dropzone [accept]="'image/*'" (change)="selectFile($event)">
+      <ngx-dropzone-label>
+        <h2>Drag file here</h2>
+        <p>or</p>
+        <h2>Click to upload from your local files</h2>
+      </ngx-dropzone-label>
+      <ngx-dropzone-image-preview ngProjectAs="ngx-dropzone-preview"  *ngIf="currentImg != null" [file]="this.currentImg!" [removable]="true" (removed)="onRemove(this.currentImg)">
+<!--        <ngx-dropzone-label>{{ this.currentImg!.name }} ({{ this.currentImg!.type }})</ngx-dropzone-label>-->
+      </ngx-dropzone-image-preview>
+    </div>
+
+  <div mat-dialog-actions align="center">
+  <button mat-raised-button [disabled]="currentImg == undefined" (click)="predict()">
+    Predict honey
+  </button>
+  </div>
+
+</mat-dialog-content>
+

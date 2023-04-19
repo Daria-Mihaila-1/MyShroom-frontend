@@ -5,6 +5,7 @@ import {UserService} from "../../services/user.service";
 import {LoginUserCredentials} from "../../data-type/LoginUserCredentials";
 import {AuthService} from "../../services/auth.service";
 import {SharedService} from "../../services/shared.service";
+import {CookieService} from "ngx-cookie-service";
 
 @Component({
   selector: 'app-login',
@@ -25,7 +26,8 @@ export class LoginComponent implements OnInit {
     private formBuilder: FormBuilder,
     private router: Router,
     private authService: AuthService,
-    private sharedService : SharedService
+    private sharedService : SharedService,
+    private cookieService : CookieService
 
   ) { }
 
@@ -48,13 +50,18 @@ export class LoginComponent implements OnInit {
     // @ts-ignore
       this.authService.loginUser(userCredentials).subscribe({
         next: response => {
-          const parsedJWT = this.parseJwt(response['token']);
-          localStorage.setItem("role",parsedJWT['roles'])
 
-          console.log(parsedJWT['role'])
+          const parsedJWT = this.parseJwt(response.body['token']);
+
+          localStorage.setItem("role",parsedJWT['roles'])
+          localStorage.setItem("user",parsedJWT['id'])
+
+
           if (parsedJWT['role'].includes("USER")) {
-          //TODO: da-i acces la tot la ce ar avea acces un user
-            this.router.navigate(['../landing_page'])
+
+            this.cookieService.set("token", response.body['token'])
+
+            this.router.navigate(['../landing-page'])
           }
         },
         error: err => {
@@ -67,7 +74,6 @@ export class LoginComponent implements OnInit {
 
    private parseJwt(token: string): any {
     const base64Url: string = token.split('.')[1];
-     console.log(window.atob(base64Url))
     const base64: string = base64Url.replace('-', '+').replace('_', '/');
     return JSON.parse(Buffer.from(base64, 'base64').toString());
   }
@@ -75,4 +81,6 @@ export class LoginComponent implements OnInit {
   goToRegister() {
     this.router.navigate(['../register'])
   }
+
+
 }

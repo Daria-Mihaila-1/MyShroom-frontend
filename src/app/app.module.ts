@@ -10,18 +10,26 @@ import {MatIconModule} from "@angular/material/icon";
 import {ReactiveFormsModule} from "@angular/forms";
 import { AppRoutingModule } from './app-routing.module';
 import {RouterModule} from "@angular/router";
-import { HttpClientModule } from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {MatInputModule} from "@angular/material/input";
 import {MatButtonModule} from "@angular/material/button";
 import { LandingPageComponent } from './components/landing-page/landing-page.component';
-
+import {PredictorDialogComponent} from "./components/landing-page/predictor-dialog/predictor-dialog.component";
+import {MatDialogModule} from "@angular/material/dialog";
+import {MatDialogConfig} from "@angular/material/dialog";
+import {DragDropModule} from "@angular/cdk/drag-drop";
+import {NgxDropzoneModule} from "ngx-dropzone";
+// import {AgmCoreModule} from "@agm/core"
+import {AuthentificationInterceptor} from "./services/authentification.interceptor";
+import {GoogleMapsModule} from "@angular/google-maps";
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     RegisterComponent,
-    LandingPageComponent
+    LandingPageComponent,
+    PredictorDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -32,10 +40,18 @@ import { LandingPageComponent } from './components/landing-page/landing-page.com
     AppRoutingModule,
     HttpClientModule,
     MatInputModule,
-    MatButtonModule
+    MatButtonModule,
+    MatDialogModule,
+    DragDropModule,
+    NgxDropzoneModule,
+    // AgmCoreModule.forRoot({
+    //   apiKey: 'AIzaSyBak_6U11rtcHdBW6x7k3XHbCT5Kl8bYWc'
+    // }),
+    GoogleMapsModule
   ],
   exports: [RouterModule],
-  providers: [],
+  providers: [MatDialogConfig,
+    { provide: HTTP_INTERCEPTORS, useClass: AuthentificationInterceptor, multi: true }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
