@@ -22,6 +22,16 @@ import {NgxDropzoneModule} from "ngx-dropzone";
 // import {AgmCoreModule} from "@agm/core"
 import {AuthentificationInterceptor} from "./services/authentification.interceptor";
 import {GoogleMapsModule} from "@angular/google-maps";
+import {MatCardModule} from "@angular/material/card";
+import {MatGridListModule} from "@angular/material/grid-list";
+import { AngularResizeEventModule } from 'angular-resize-event';
+import { PostComponent } from './components/landing-page/post/post.component';
+import {MatChipsModule} from "@angular/material/chips";
+import {MatSnackBar, MatSnackBarModule} from "@angular/material/snack-bar";
+import {MatListModule} from "@angular/material/list";
+import {MatTableModule} from "@angular/material/table";
+import {MatMenuModule} from "@angular/material/menu";
+import { MapDialogComponent } from './components/landing-page/map-dialog/map-dialog.component';
 
 @NgModule({
   declarations: [
@@ -29,26 +39,37 @@ import {GoogleMapsModule} from "@angular/google-maps";
     LoginComponent,
     RegisterComponent,
     LandingPageComponent,
-    PredictorDialogComponent
+    PredictorDialogComponent,
+    PostComponent,
+    MapDialogComponent
   ],
-  imports: [
-    BrowserModule,
-    BrowserAnimationsModule,
-    MatFormFieldModule,
-    MatIconModule,
-    ReactiveFormsModule,
-    AppRoutingModule,
-    HttpClientModule,
-    MatInputModule,
-    MatButtonModule,
-    MatDialogModule,
-    DragDropModule,
-    NgxDropzoneModule,
-    // AgmCoreModule.forRoot({
-    //   apiKey: 'AIzaSyBak_6U11rtcHdBW6x7k3XHbCT5Kl8bYWc'
-    // }),
-    GoogleMapsModule
-  ],
+    imports: [
+        BrowserModule,
+        BrowserAnimationsModule,
+        MatFormFieldModule,
+        MatIconModule,
+        ReactiveFormsModule,
+        AppRoutingModule,
+        HttpClientModule,
+        MatInputModule,
+        MatButtonModule,
+        MatDialogModule,
+        DragDropModule,
+        NgxDropzoneModule,
+        // AgmCoreModule.forRoot({
+        //   apiKey: 'AIzaSyBak_6U11rtcHdBW6x7k3XHbCT5Kl8bYWc'
+        // }),
+        GoogleMapsModule,
+        MatCardModule,
+        MatGridListModule,
+        AngularResizeEventModule,
+        MatChipsModule,
+        MatSnackBarModule,
+        MatListModule,
+        MatTableModule,
+        MatMenuModule
+
+    ],
   exports: [RouterModule],
   providers: [MatDialogConfig,
     { provide: HTTP_INTERCEPTORS, useClass: AuthentificationInterceptor, multi: true }],

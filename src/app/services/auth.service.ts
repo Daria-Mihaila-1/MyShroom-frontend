@@ -3,6 +3,7 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {LoginUserCredentials} from "../data-type/LoginUserCredentials";
 import {RegisterUserCredentials} from "../data-type/RegisterUserCredentials";
 import {Observable} from "rxjs";
+import {CookieService} from "ngx-cookie-service";
 let LOGIN : string;
 let REGISTER: string;
 let SIGNOUT: string;
@@ -12,34 +13,34 @@ let bodyURL:string = "";
   providedIn: 'root'
 })
 export class AuthService {
+   httpOptions = {
+    observe: 'response' as 'response',
+    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+  };
 
-
-  constructor(private httpClient : HttpClient) {
+  constructor(private httpClient : HttpClient,
+  ) {
     bodyURL = "http://localhost:8090/api"
     LOGIN = bodyURL + "/auth/login"
     REGISTER = bodyURL + "/auth/register"
-    REGISTER = bodyURL + "/auth/logout"
+    SIGNOUT = bodyURL + "/auth/logout"
   }
 
   loginUser(userCredentials:LoginUserCredentials):Observable<any> {
-    const httpOptions = {
-      observe: 'response' as 'response',
-      headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-    };
+
     localStorage.setItem("userName", userCredentials.userName)
     //TODO: cu httpOptions sa faci si la register si la signout
-    console.log("httpOptions headers:")
-    console.log(httpOptions.headers)
-    return this.httpClient.post<any>(LOGIN, userCredentials, httpOptions);
+
+    return this.httpClient.post<any>(LOGIN, userCredentials, this.httpOptions);
   }
 
 
   registerUser(userCredentials: RegisterUserCredentials) {
 
-    return this.httpClient.post<any>(REGISTER, userCredentials);
+    return this.httpClient.post<any>(REGISTER, userCredentials, this.httpOptions);
 
   }
-  signOutUser() {
-    return this.httpClient.get<any>(SIGNOUT);
+  signOutUser():any{
+    return this.httpClient.post(SIGNOUT, {}, this.httpOptions);
   }
 }

@@ -48,6 +48,7 @@ export class RegisterComponent implements OnInit {
     this.authService.registerUser(userCredentials).subscribe( {
        next : response =>{
 
+
          this.router.navigate(['login'])
          this.setMessage(userCredentials.userName)
 

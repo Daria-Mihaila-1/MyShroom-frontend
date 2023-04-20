@@ -8,6 +8,7 @@ export class Post {
   longitude!: number;
   description : string = "";
   base64Img : string ="";
+  date: string ="";
   time: string ="";
   docs : Doc[] =[];
   userId! : number;

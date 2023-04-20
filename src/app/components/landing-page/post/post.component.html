@@ -1,0 +1,24 @@
+<div class="post-wrapper">
+  <mat-card>
+  <mat-card-header>
+      <mat-card-title class="post_title">{{this.post!.title}}</mat-card-title>
+      <mat-card-subtitle>Genus:{{this.post!.mushroomType}}</mat-card-subtitle>
+
+      <div class="options_and_date_wrapper">
+        <mat-card-actions class="post_action"> <button mat-icon-button [matMenuTriggerFor]="menu"><mat-icon>more_vert</mat-icon></button></mat-card-actions>
+        <mat-menu #menu="matMenu"  yPosition="above" xPosition="after">
+          <button mat-menu-item>
+            <mat-icon>flag</mat-icon>
+            <span>Report misleading information</span>
+          </button>
+        </mat-menu>
+        <mat-card-subtitle class="post_subtitle">{{this.post!.date}} {{this.post!.time}}</mat-card-subtitle>
+    </div>
+  </mat-card-header>
+  <mat-card-content class="post_card_content">
+    <img mat-card-image class="post_image"  alt="post image" [src]="this.data_uri"/>
+      <p class="post_description">{{this.post!.description}}</p>
+  </mat-card-content>
+
+  </mat-card>
+</div>

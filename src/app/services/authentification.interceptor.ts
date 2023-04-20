@@ -15,13 +15,13 @@ export class AuthentificationInterceptor implements HttpInterceptor {
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
 
-    if(!request.url.includes("/auth/")) {
+    if(!(request.url.includes("/auth/login") && request.url.includes("/auth/register")) ) {
 
 
       const jwt = this.cookieService.get("token");
-
+      console.log(jwt)
       request = request.clone( {withCredentials:true} );
-      console.log("sunt in altceva nu in auth")
+      console.log("sunt in altceva nu in auth/login")
       console.log(request)
       console.log("Headers are set");
       return next.handle((request))

@@ -6,6 +6,7 @@ import {LoginUserCredentials} from "../../data-type/LoginUserCredentials";
 import {AuthService} from "../../services/auth.service";
 import {SharedService} from "../../services/shared.service";
 import {CookieService} from "ngx-cookie-service";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-login',
@@ -16,6 +17,7 @@ import {CookieService} from "ngx-cookie-service";
 
 export class LoginComponent implements OnInit {
   msg! : string;
+  tokenMsg: string|undefined;
 
   userCredentialsFormGroup = this.formBuilder.group({
     username: ["",[Validators.required, Validators.nullValidator]] ,
@@ -23,6 +25,7 @@ export class LoginComponent implements OnInit {
   })
   public hide:boolean = true;
   constructor(
+    private snackBar: MatSnackBar,
     private formBuilder: FormBuilder,
     private router: Router,
     private authService: AuthService,
@@ -38,6 +41,13 @@ export class LoginComponent implements OnInit {
       this.userCredentialsFormGroup.setValue({username:this.msg,
       password: ""})
       this.sharedService.editMessage("default message")
+    }
+
+    if (localStorage.getItem("tokenStatus")){
+      if (localStorage.getItem("tokenStatus") === "isExpired"){
+        this.snackBar.open("Your session has expired.\n Please log in again!", "Ok",{duration: 300});
+      }
+
     }
   }
 
