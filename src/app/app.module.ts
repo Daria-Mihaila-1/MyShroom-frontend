@@ -32,6 +32,8 @@ import {MatListModule} from "@angular/material/list";
 import {MatTableModule} from "@angular/material/table";
 import {MatMenuModule} from "@angular/material/menu";
 import { MapDialogComponent } from './components/landing-page/map-dialog/map-dialog.component';
+import { MapComponent } from './components/map/map.component';
+import {MatAutocompleteModule} from "@angular/material/autocomplete";
 
 @NgModule({
   declarations: [
@@ -41,35 +43,37 @@ import { MapDialogComponent } from './components/landing-page/map-dialog/map-dia
     LandingPageComponent,
     PredictorDialogComponent,
     PostComponent,
-    MapDialogComponent
+    MapDialogComponent,
+    MapComponent
   ],
-    imports: [
-        BrowserModule,
-        BrowserAnimationsModule,
-        MatFormFieldModule,
-        MatIconModule,
-        ReactiveFormsModule,
-        AppRoutingModule,
-        HttpClientModule,
-        MatInputModule,
-        MatButtonModule,
-        MatDialogModule,
-        DragDropModule,
-        NgxDropzoneModule,
-        // AgmCoreModule.forRoot({
-        //   apiKey: 'AIzaSyBak_6U11rtcHdBW6x7k3XHbCT5Kl8bYWc'
-        // }),
-        GoogleMapsModule,
-        MatCardModule,
-        MatGridListModule,
-        AngularResizeEventModule,
-        MatChipsModule,
-        MatSnackBarModule,
-        MatListModule,
-        MatTableModule,
-        MatMenuModule
+  imports: [
+    BrowserModule,
+    BrowserAnimationsModule,
+    MatFormFieldModule,
+    MatIconModule,
+    ReactiveFormsModule,
+    AppRoutingModule,
+    HttpClientModule,
+    MatInputModule,
+    MatButtonModule,
+    MatDialogModule,
+    DragDropModule,
+    NgxDropzoneModule,
+    // AgmCoreModule.forRoot({
+    //   apiKey: 'AIzaSyBak_6U11rtcHdBW6x7k3XHbCT5Kl8bYWc'
+    // }),
+    GoogleMapsModule,
+    MatCardModule,
+    MatGridListModule,
+    AngularResizeEventModule,
+    MatChipsModule,
+    MatSnackBarModule,
+    MatListModule,
+    MatTableModule,
+    MatMenuModule,
+    MatAutocompleteModule
 
-    ],
+  ],
   exports: [RouterModule],
   providers: [MatDialogConfig,
     { provide: HTTP_INTERCEPTORS, useClass: AuthentificationInterceptor, multi: true }],

@@ -7,17 +7,11 @@
   </mat-grid-tile>
 
   <mat-grid-tile colspan="2" rowspan="4" id="myMapGridTile">
-    <google-map [center]="center"
-              [zoom]="zoom" [width]="this.width!" height="400px"
-              [options]="myOptions" id="myMap">
-      <map-marker *ngFor="let marker of this.markers" [position]="{lat:marker.lat, lng:marker.lng}">
-      </map-marker>
-    </google-map>
+    <app-map  [options]="this.myOptions" [width]="this.width" [markers]="this.markers!" (dblclick)="this.openMapDialog()"></app-map>
   </mat-grid-tile>
 
-  <mat-grid-tile  class="post_tile"colspan="2" rowspan="5" *ngFor="let post of this.posts ">
-    <app-post [post]="post"></app-post>
-
+  <mat-grid-tile  class="post_tile" colspan="2" rowspan="5" *ngFor="let post of this.posts ">
+    <app-post [post]="post" ></app-post>
   </mat-grid-tile>
 
   <mat-grid-tile colspan="2" rowspan="1">

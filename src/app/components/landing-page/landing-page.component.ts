@@ -8,6 +8,7 @@ import {Router} from "@angular/router";
 import { HostListener } from "@angular/core";
 import {CookieService} from "ngx-cookie-service";
 import {MapDialogComponent} from "./map-dialog/map-dialog.component";
+import {Marker} from "../../data-type/Marker";
 const iconBase =
   "https://developers.google.com/maps/documentation/javascript/examples/full/images/";
 
@@ -33,13 +34,14 @@ export class LandingPageComponent implements OnInit {
     east: 30.00675167516294,
   };
   posts: Post[] = [];
-  markers : marker[] =[];
+  markers : Marker[] =[];
   marker_icons:string[] = [];
   myOptions: google.maps.MapOptions = {
     center :{lat:this.lat,lng:this.lng},
     zoom : this.zoom,
     restriction:{latLngBounds:this.ROMANIA_BOUNDS,  strictBounds: false},
     fullscreenControl:false,
+
   };
 
 
@@ -86,7 +88,7 @@ export class LandingPageComponent implements OnInit {
 
   openMapDialog() :void {
     const dialogRef = this.dialog.open(MapDialogComponent, {
-      data: "hahah",
+      data: {markers:this.markers,posts:this.posts}
     });
 
   }
@@ -118,10 +120,3 @@ export class LandingPageComponent implements OnInit {
 
 }
 
-class marker {
-  lat!: number;
-  lng!: number;
-
-  type:string ="";
-
-}

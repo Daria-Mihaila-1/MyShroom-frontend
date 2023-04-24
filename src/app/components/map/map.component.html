@@ -1,0 +1,7 @@
+<div>
+  <google-map #map [width]="this.width!" [options]="this.options!" >
+    <map-marker *ngFor="let marker of this.markers" [position]="{lat:marker.lat, lng:marker.lng}">
+    </map-marker>
+    <map-marker #myPosition [position]="{lat:this.myLat, lng:this.myLng}"><i class="fa-solid fa-location-dot"></i></map-marker>
+  </google-map>
+</div>

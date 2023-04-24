@@ -18,9 +18,9 @@ export class PostComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.post){
-      console.log("from post component")
-      console.log(this.post.title)
-      console.log(this.post.base64Img.indexOf("/9j/"))
+      // console.log("from post component")
+      // console.log(this.post.title)
+      // console.log(this.post.base64Img.indexOf("/9j/"))
       if (this.post.base64Img.indexOf("/9j/") == 0){
         let content_type = "data:image/jpg;base64"
         this.data_uri = content_type + "," + this.post.base64Img

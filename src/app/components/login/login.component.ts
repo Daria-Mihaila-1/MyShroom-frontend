@@ -45,7 +45,8 @@ export class LoginComponent implements OnInit {
 
     if (localStorage.getItem("tokenStatus")){
       if (localStorage.getItem("tokenStatus") === "isExpired"){
-        this.snackBar.open("Your session has expired.\n Please log in again!", "Ok",{duration: 300});
+        localStorage.setItem("tokenStatus", "notExpired")
+        this.snackBar.open("Your session has expired.\n Please log in again!", "Ok",{duration: 3000});
       }
 
     }
