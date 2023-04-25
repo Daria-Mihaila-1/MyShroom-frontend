@@ -1,4 +1,4 @@
-import {Component, Inject, OnInit, SimpleChange, SimpleChanges} from '@angular/core';
+import {Component, Inject, OnDestroy, OnInit, SimpleChange, SimpleChanges} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {Post} from "../../../data-type/Post";
 import {Marker} from "../../../data-type/Marker";
@@ -10,7 +10,7 @@ import {map, Observable, startWith} from "rxjs";
   templateUrl: './map-dialog.component.html',
   styleUrls: ['./map-dialog.component.css']
 })
-export class MapDialogComponent implements OnInit {
+export class MapDialogComponent implements OnInit{
   lat = 45.84390812570921
   lng = 24.971530777243718
   center = new google.maps.LatLng(this.lat,this.lng)
@@ -49,6 +49,7 @@ export class MapDialogComponent implements OnInit {
     console.log(this.distinctPosts)
     this.initializeFilteredList();
   }
+
 
   ngOnChanges(changes:SimpleChanges):void {
     console.log(changes)
@@ -102,4 +103,6 @@ export class MapDialogComponent implements OnInit {
     console.log("markers",this.markers)
     console.log("resetez acuma valorile la cele initiale primite de la componenta principala")
   }
+
+
 }

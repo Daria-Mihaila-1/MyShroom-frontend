@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
 import {PredictorDialogComponent} from "./predictor-dialog/predictor-dialog.component";
 import {MatDialog} from "@angular/material/dialog";
 import {PostService} from "../../services/post.service";
@@ -9,6 +9,7 @@ import { HostListener } from "@angular/core";
 import {CookieService} from "ngx-cookie-service";
 import {MapDialogComponent} from "./map-dialog/map-dialog.component";
 import {Marker} from "../../data-type/Marker";
+import {MapComponent} from "../map/map.component";
 const iconBase =
   "https://developers.google.com/maps/documentation/javascript/examples/full/images/";
 
@@ -22,7 +23,10 @@ const iconBase =
 export class LandingPageComponent implements OnInit {
   height : number = 0;
   width: number = window.innerWidth;
-  map: google.maps.Map | undefined;
+
+
+  @ViewChild('mapGridTile') mapContainer : any;
+
   lat = 45.84390812570921
   lng = 24.971530777243718
   center = new google.maps.LatLng(this.lat,this.lng)
@@ -35,7 +39,7 @@ export class LandingPageComponent implements OnInit {
   };
   posts: Post[] = [];
   markers : Marker[] =[];
-  marker_icons:string[] = [];
+
   myOptions: google.maps.MapOptions = {
     center :{lat:this.lat,lng:this.lng},
     zoom : this.zoom,
@@ -52,6 +56,7 @@ export class LandingPageComponent implements OnInit {
               private cookieService: CookieService) {
 
   }
+
 
 
   ngOnInit(): void {

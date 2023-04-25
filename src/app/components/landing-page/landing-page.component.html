@@ -7,7 +7,7 @@
   </mat-grid-tile>
 
   <mat-grid-tile colspan="2" rowspan="4" id="myMapGridTile">
-    <app-map  [options]="this.myOptions" [width]="this.width" [markers]="this.markers!" (dblclick)="this.openMapDialog()"></app-map>
+    <app-map  [options]="this.myOptions" [width]="this.width" [height]="405" [markers]="this.markers!" (dblclick)="this.openMapDialog()"></app-map>
   </mat-grid-tile>
 
   <mat-grid-tile  class="post_tile" colspan="2" rowspan="5" *ngFor="let post of this.posts ">

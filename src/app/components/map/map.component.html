@@ -1,7 +1,8 @@
-<div>
-  <google-map #map [width]="this.width!" [options]="this.options!" >
+
+  <google-map id="map" [width]="this.width!" [options]="this.options!" [height]="this.height!" (mapInitialized)="handleMapInitialized($event)">
     <map-marker *ngFor="let marker of this.markers" [position]="{lat:marker.lat, lng:marker.lng}">
     </map-marker>
-    <map-marker #myPosition [position]="{lat:this.myLat, lng:this.myLng}"><i class="fa-solid fa-location-dot"></i></map-marker>
+    <map-marker #myLocationMarker [position]="{lat:this.myLat!, lng:this.myLng!}" [icon]="this.myLocationMarkerImage!" (mapMouseover)="showInfoWindow($event)">
+<map-info-window #infoWindow *ngIf="this.infoWindowIsVisible"><span>my location</span></map-info-window></map-marker>
   </google-map>
-</div>
+
