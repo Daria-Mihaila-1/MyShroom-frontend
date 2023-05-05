@@ -7,6 +7,8 @@ import {AuthService} from "../../services/auth.service";
 import {SharedService} from "../../services/shared.service";
 import {CookieService} from "ngx-cookie-service";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {MatDialog} from "@angular/material/dialog";
+import {NotificationDialogComponent} from "../notification-dialog/notification-dialog.component";
 
 @Component({
   selector: 'app-login',
@@ -30,8 +32,8 @@ export class LoginComponent implements OnInit {
     private router: Router,
     private authService: AuthService,
     private sharedService : SharedService,
-    private cookieService : CookieService
-
+    private cookieService : CookieService,
+    private dialog : MatDialog
   ) { }
 
   ngOnInit(): void {
@@ -77,6 +79,7 @@ export class LoginComponent implements OnInit {
         },
         error: err => {
           //TODO:Error dialog box
+          this.dialog.open(NotificationDialogComponent, {data: {notificationMessage:"Login failed \n username or password were wrong", notificationTitle:"Login failed"}})
           console.log(err)
     }
   });

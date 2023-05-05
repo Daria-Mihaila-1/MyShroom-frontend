@@ -1,9 +1,23 @@
-<div class="map_dialog_container">
+<div class="map-dialog-container">
+  <form class="kmRadius-form" [formGroup]="kmFormGroup" (ngSubmit)="getClosestMarkers()">
+    <mat-form-field class="km-radius-width" >
+      <mat-label>Radius size in km</mat-label>
+      <input type="text" matInput [formControl]="kmInput" [errorStateMatcher]="matcher" formControlName="kmInput"
+             placeholder="Ex. 126.7">
+      <mat-hint>Insert a number for the radius</mat-hint>
+      <mat-error *ngIf="kmInput.hasError('pattern') && !kmInput.hasError('required')">
+        Please enter a valid km number
+      </mat-error>
+      <mat-icon matSuffix *ngIf="this.kmInput.value != '' && this.kmInput.value !=null" (click)="this.kmInput.reset()">close</mat-icon>
+    </mat-form-field>
 
-  <form>
+    <button mat-button type="submit" [disabled]="this.kmInput.invalid || this.kmInput.value == undefined">check nearest</button>
+  </form>
+
+  <form class="genus-form">
     <mat-form-field appearance="legacy">
       <mat-label>Search after Genus</mat-label>
-      <input type="text" matInput [formControl]="myControl" [matAutocomplete]="auto" (change)="resetMapValues($event)">
+      <input type="text" matInput [formControl]="myControl" [matAutocomplete]="auto" (change)="resetMapValues($event)"  >
       <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" (optionSelected)='showPostsOnMap($event.option.value)'  >
         <mat-option *ngFor="let post of this.filteredGenuses! | async" [value]="post">
           {{post.mushroomType}}
@@ -11,7 +25,10 @@
       </mat-autocomplete>
     </mat-form-field>
   </form>
-  <div class="map-wrapper">
-    <app-map [markers]="this.markers!" [options]="this.options!"> </app-map>
+
+  <div class="map-wrapper" #mapwrapper>
+    <app-map [markers]="this.markers!" [options]="this.options!" [height]="500" [width]="500" [posts]="this.posts!"
+             (newItemEvent)="setCurrentLocation($event)"
+             [createCircleSubject]="this.createCircleSubject!"> </app-map>
   </div>
 </div>

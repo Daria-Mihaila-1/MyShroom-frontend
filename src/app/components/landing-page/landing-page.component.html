@@ -1,22 +1,33 @@
-<!--<button mat-button type="button" (click)="openPredictWindow()">check my mushroom</button>-->
+<mat-sidenav-container class="example-container">
+  <mat-sidenav #sidenav mode="over"  >
+    <mat-nav-list>
+      <p>MyShroom Menu</p>
+      <mat-list-item (click)="openPredictWindow()">Check my mushroom</mat-list-item>
+      <mat-list-item (click)="openCreatePost()">Share your own Findings</mat-list-item>
+      <mat-list-item (click)="signOut()"><mat-icon>exit_to_app</mat-icon>Sign out</mat-list-item>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+  <mat-toolbar class="landingPageToolbar">
+      <button id="menu-button" mat-icon-button (click)="sidenav.toggle()"><mat-icon>menu</mat-icon></button>
+  </mat-toolbar>
   <mat-grid-list class="items_list"cols="2" rowHeight="100px">
 
-  <mat-grid-tile class="img-wrapper" colspan="2" rowspan="2" >
+  <mat-grid-tile class="img-wrapper" colspan="2" rowspan="2.5" >
     <mat-chip> MyShroom</mat-chip>
-        <img class="cover-img" src="../../../assets/mush_cover.jpeg"/>
+        <img class="cover-img" src="../../../assets/mush_cover.jpeg" alt="Cover Img"/>
   </mat-grid-tile>
 
-  <mat-grid-tile colspan="2" rowspan="4" id="myMapGridTile">
-    <app-map  [options]="this.myOptions" [width]="this.width" [height]="405" [markers]="this.markers!" (dblclick)="this.openMapDialog()"></app-map>
+  <mat-grid-tile #mapContainer colspan="2" rowspan="4" id="myMapGridTile">
+    <app-map  [options]="this.myOptions" [width]="this.width" [height]="403" [markers]="this.markers!" [posts]="this.posts!" (dblclick)="this.openMapDialog()"></app-map>
   </mat-grid-tile>
 
-  <mat-grid-tile  class="post_tile" colspan="2" rowspan="5" *ngFor="let post of this.posts ">
-    <app-post [post]="post" ></app-post>
+  <mat-grid-tile  class="post_tile" colspan="2" rowspan="5" *ngFor="let post of this.posts">
+    <app-post [post]="post"
+              (deletePostEvent)="deletePost($event)"
+              (updatePostEvent)="refreshList($event)"
+              (reportPostEvent)="refreshList($event)"></app-post>
   </mat-grid-tile>
-
-  <mat-grid-tile colspan="2" rowspan="1">
-    <button mat-button type="button"  (click)="signOut()">Sign Out</button>
-  </mat-grid-tile>
-
   </mat-grid-list>
-
+  </mat-sidenav-content>
+</mat-sidenav-container>

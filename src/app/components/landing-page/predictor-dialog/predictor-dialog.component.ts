@@ -1,10 +1,12 @@
-import {Component, Inject, OnInit} from '@angular/core';
+import {AfterViewInit, Component, Inject, OnInit, Pipe, PipeTransform, ViewChild} from '@angular/core';
 
 import { MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {ImageUploadService} from "../../../services/image-upload.service";
 import {PredictionResponse} from "../../../data-type/PredictionResponse";
 import {PredictionRequest} from "../../../data-type/PredictionRequest";
 import {CdkDragDrop} from "@angular/cdk/drag-drop";
+import {KeyValue} from "@angular/common";
+import {MatSidenavContent} from "@angular/material/sidenav";
 
 
 @Component({
@@ -12,35 +14,37 @@ import {CdkDragDrop} from "@angular/cdk/drag-drop";
   templateUrl: './predictor-dialog.component.html',
   styleUrls: ['./predictor-dialog.component.css']
 })
-export class PredictorDialogComponent implements OnInit {
+export class PredictorDialogComponent implements OnInit, AfterViewInit {
 
   currentImg? : File;
   preview :string = '';
   prediction : Map<string, number> = new Map<string, number>();
+  loading : boolean = false;
+  predicted = false;
+
+  @ViewChild(MatSidenavContent) matSidenavContent: MatSidenavContent | undefined;
+  @ViewChild('sidenav') si: MatSidenavContent | undefined;
 
   constructor(public dialogRef: MatDialogRef<PredictorDialogComponent>,
-              private imageUploadService: ImageUploadService) { }
-
-  ngOnInit(): void {
+              private imageUploadService: ImageUploadService) {
 
   }
 
-
-  onNoClick(): void {
-    this.dialogRef.close();
+  ngOnInit(): void {
+    console.log(this.prediction)
   }
 
   selectFile(event: any): void {
 
     this.preview = '';
     console.log("la inceput de selectFile")
-    console.log(event)
+
 
     this.currentImg = event.addedFiles[0];
 
     if (this.currentImg) {
-      console.log("acuma vedem fisieru daca e null")
-      const file: File = this.currentImg;
+
+
       this.preview = '';
 
       const reader = new FileReader();
@@ -57,31 +61,47 @@ export class PredictorDialogComponent implements OnInit {
 
 
   predict() : void {
+    this.loading = true;
     if (this.currentImg) {
-
       const img: PredictionRequest = {
         base64Img : this.preview
       }
-
       this.imageUploadService.predict(img).subscribe(
         res => {
-          console.log(res)
-          this.prediction = res.prediction;
+
+          this.prediction = res.scores!
+          console.log(this.prediction)
+          this.loading = false;
+          this.predicted = true;
         },
         err => {
-            console.log("nu am mers boss ce sa faci")
+            console.log("Error")
         }
       )
     }
+
   }
 
 
 
     onRemove(event: any) {
-      console.log(event);
+        console.log(this.currentImg)
        this.currentImg = undefined;
        this.preview = ''
-    }
+      this.prediction = new Map<string, number>();
+       this.predicted = false
+
+
+  }
+  mySortingFunction  = (a: KeyValue<string, number>, b: KeyValue<string, number>) => {
+    return a.value > b.value ? -1 : 1;
+  }
+
+  ngAfterViewInit(): void {
+    this.matSidenavContent?.elementScrolled( )
+  }
 
 
 }
+
+

@@ -1,13 +1,12 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatIconModule} from "@angular/material/icon";
-import {ReactiveFormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import { AppRoutingModule } from './app-routing.module';
 import {RouterModule} from "@angular/router";
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
@@ -34,6 +33,15 @@ import {MatMenuModule} from "@angular/material/menu";
 import { MapDialogComponent } from './components/landing-page/map-dialog/map-dialog.component';
 import { MapComponent } from './components/map/map.component';
 import {MatAutocompleteModule} from "@angular/material/autocomplete";
+import {PostDialogComponent} from "./components/post-dialog/post-dialog.component";
+import {MatSidenavModule} from "@angular/material/sidenav";
+import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
+import {MatToolbarModule} from "@angular/material/toolbar";
+import {MatTabsModule} from "@angular/material/tabs";
+import { CreatePostComponent } from './components/create-post/create-post.component';
+import {MatSelectModule} from "@angular/material/select";
+import { ConfirmationDialogComponent } from './components/confirmation-dialog/confirmation-dialog.component';
+import { NotificationDialogComponent } from './components/notification-dialog/notification-dialog.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +52,11 @@ import {MatAutocompleteModule} from "@angular/material/autocomplete";
     PredictorDialogComponent,
     PostComponent,
     MapDialogComponent,
-    MapComponent
+    MapComponent,
+    PostDialogComponent,
+    CreatePostComponent,
+    ConfirmationDialogComponent,
+    NotificationDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -71,7 +83,13 @@ import {MatAutocompleteModule} from "@angular/material/autocomplete";
     MatListModule,
     MatTableModule,
     MatMenuModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,
+    MatSidenavModule,
+    FormsModule,
+    MatProgressSpinnerModule,
+    MatToolbarModule,
+    MatTabsModule,
+    MatSelectModule
 
   ],
   exports: [RouterModule],

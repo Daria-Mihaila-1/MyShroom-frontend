@@ -19,3 +19,18 @@ mat-dialog-content{
   margin-top: 15px;
   display: flex;
 }
+
+.dropFileLabel {
+  border: none;
+}
+
+
+predictButtonContent {
+  display: flex;
+  flex-direction: row;
+}
+
+button.div.mat-spinner {
+  height: 10px;
+  width: 100%;
+}

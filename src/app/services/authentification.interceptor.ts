@@ -19,10 +19,7 @@ export class AuthentificationInterceptor implements HttpInterceptor {
 
 
       const jwt = this.cookieService.get("token");
-      console.log(jwt)
       request = request.clone( {withCredentials:true} );
-      console.log("sunt in altceva nu in auth/login")
-      console.log(request)
       console.log("Headers are set");
       return next.handle((request))
     }

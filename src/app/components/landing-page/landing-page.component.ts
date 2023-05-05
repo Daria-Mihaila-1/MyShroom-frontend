@@ -1,4 +1,12 @@
-import {Component, ElementRef, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+  ViewChild
+} from '@angular/core';
 import {PredictorDialogComponent} from "./predictor-dialog/predictor-dialog.component";
 import {MatDialog} from "@angular/material/dialog";
 import {PostService} from "../../services/post.service";
@@ -10,6 +18,7 @@ import {CookieService} from "ngx-cookie-service";
 import {MapDialogComponent} from "./map-dialog/map-dialog.component";
 import {Marker} from "../../data-type/Marker";
 import {MapComponent} from "../map/map.component";
+import {CreatePostComponent} from "../create-post/create-post.component";
 const iconBase =
   "https://developers.google.com/maps/documentation/javascript/examples/full/images/";
 
@@ -20,12 +29,12 @@ const iconBase =
 })
 
 
-export class LandingPageComponent implements OnInit {
+export class LandingPageComponent implements OnInit, OnChanges, AfterViewInit {
   height : number = 0;
   width: number = window.innerWidth;
 
 
-  @ViewChild('mapGridTile') mapContainer : any;
+  @ViewChild('mapContainer',  { read: ElementRef }) mapContainer : ElementRef | undefined;
 
   lat = 45.84390812570921
   lng = 24.971530777243718
@@ -60,12 +69,13 @@ export class LandingPageComponent implements OnInit {
 
 
   ngOnInit(): void {
-      this.postService.getAllPosts().subscribe(data => {
-      this.posts = data;
 
+      this.postService.getPostsNotReportedByMe().subscribe(data => {
+      this.posts = data.reverse();
+      console.log(data)
       this.markers = this.posts.map((el => ({ lat: el.latitude, lng: el.longitude, type:el.type})));
 
-
+        //TODO: fa markerele pe tipuri
         for (let i = 0; i < this.markers.length; i++){
         if (this.markers[i].type == "INFO"){
           this.markers[i].type = iconBase + "/.png"
@@ -80,7 +90,9 @@ export class LandingPageComponent implements OnInit {
 
       },
       err => {
+        console.log("token probably expired")
         this.router.navigate(['../login'])
+        console.log("token probably expired")
         localStorage.setItem("tokenStatus", "isExpired")
       })
     console.log("inside landing page" + this.parseJwt(this.cookieService.get("token"))['id'])
@@ -88,17 +100,16 @@ export class LandingPageComponent implements OnInit {
   @HostListener('window:resize', ['$event'])
   onResize(event: Event) {
     this.width = (event.target as Window).innerWidth;
-    this.height = (event.target as Window).innerHeight;
+
   }
 
   openMapDialog() :void {
     const dialogRef = this.dialog.open(MapDialogComponent, {
-      data: {markers:this.markers,posts:this.posts}
-    });
-
+      data: {markers:this.markers,posts:this.posts},
+    })
   }
   openPredictWindow(): void {
-    console.log(this.posts)
+
     const dialogRef = this.dialog.open(PredictorDialogComponent, {
     data: {img:"ceva random boss"}
   });
@@ -114,7 +125,8 @@ export class LandingPageComponent implements OnInit {
     this.authService.signOutUser();
     this.router.navigate(['../login'])
     this.cookieService.set("token","")
-    console.log(this.cookieService.get("token"))
+    localStorage.removeItem('user')
+    localStorage.removeItem('token')
   }
 
   private parseJwt(token: string): any {
@@ -123,5 +135,70 @@ export class LandingPageComponent implements OnInit {
     return JSON.parse(Buffer.from(base64, 'base64').toString());
   }
 
+  openCreatePost() {
+    let dialogRef = this.dialog.open(CreatePostComponent)
+
+    dialogRef.afterClosed().subscribe( result =>
+    {
+      this.postService.getPostsNotReportedByMe().subscribe(data =>
+      {
+        this.posts = data.reverse();
+        this.markers = this.posts.map((el => ({ lat: el.latitude, lng: el.longitude, type:el.type})));
+
+
+        for (let i = 0; i < this.markers.length; i++){
+          if (this.markers[i].type == "INFO"){
+            this.markers[i].type = iconBase + "/.png"
+          }
+          else if(this.markers[i].type == "BEAR_ALERT"){
+            this.markers[i].type = iconBase + "/bear.png"
+          }
+          else if(this.markers[i].type == "POISONOUS"){
+            this.markers[i].type = iconBase + "/alert.png"
+          }
+        }
+
+      },
+        err => {
+          console.log("token probably expired")
+          this.router.navigate(['../login'])
+          console.log("token probably expired")
+          localStorage.setItem("tokenStatus", "isExpired")
+        })
+    })
+  }
+
+
+  ngOnChanges(changes: SimpleChanges): void {
+  }
+
+
+
+  ngAfterViewInit(): void {
+    this.height = this.mapContainer?.nativeElement.offsetHeight;
+    console.log(this.height)
+  }
+
+  getPostIndex(post : Post) {
+    let index = 0
+    while (this.posts[index].id != post.id) index++;
+    return index;
+  }
+  deletePost($event: number) {
+
+    this.postService.deletePost($event).subscribe( data => {
+      console.log("deleted post " + $event)
+      console.log(data)
+      let deletedPostIndex =this.getPostIndex(data)
+      if (deletedPostIndex < this.posts.length) {
+        this.posts.splice(deletedPostIndex, 1)
+      }
+    })
+  }
+
+  refreshList($event: Post[] | void) {
+    console.log($event)
+    window.location.reload();
+  }
 }
 
