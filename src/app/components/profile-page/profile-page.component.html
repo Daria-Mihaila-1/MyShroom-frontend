@@ -1,38 +1,42 @@
-<mat-sidenav-container class="example-container">
+<mat-sidenav-container class="profilePageContainer">
   <mat-sidenav #sidenav mode="over">
     <mat-nav-list>
       <p>MyShroom Menu</p>
-      <mat-list-item (click)="goToLandingPage()"><mat-icon>home</mat-icon>Home</mat-list-item>
-      <mat-list-item (click)="openPredictWindow()"><mat-icon></mat-icon>Check my mushroom</mat-list-item>
+      <mat-list-item (click)="goToLandingPage()">
+        <mat-icon>home</mat-icon>
+        Home
+      </mat-list-item>
+      <mat-list-item (click)="openPredictWindow()">
+        <mat-icon></mat-icon>
+        Check my mushroom
+      </mat-list-item>
       <mat-list-item (click)="openCreatePost()">Share your own Findings</mat-list-item>
-      <mat-list-item (click)="signOut()"><mat-icon>exit_to_app</mat-icon>Sign out</mat-list-item>
+      <mat-list-item (click)="signOut()">
+        <mat-icon>exit_to_app</mat-icon>
+        Sign out
+      </mat-list-item>
     </mat-nav-list>
   </mat-sidenav>
-  <mat-sidenav-content>
-
-    <mat-toolbar class="landingPageToolbar">
-      <button id="menu-button" mat-icon-button (click)="sidenav.toggle()"><mat-icon>menu</mat-icon></button>
+  <mat-sidenav-content class="profilePageContent">
+    <mat-toolbar class="profilePageToolbar">
+      <button id="menu-button" mat-icon-button (click)="sidenav.toggle()">
+        <mat-icon>menu</mat-icon>
+      </button>
     </mat-toolbar>
-    <div class="card">
-
-      <div class="floating-action-button">+</div>
-
-<!--      <div class="profile-picture">-->
-<!--        <img class="profile-picture-outer-radius" [src]="img" alt="">-->
-<!--      </div>-->
-
-      <div class="infobox" *ngIf="myUser">
-        <p class="infobox-username" *ngIf="myUser.firstName && myUser.lastName">{{myUser.firstName+ " " + myUser.lastName}}</p>
-        <p class="infobox-username" *ngIf="myUser.userName">{{myUser.userName}}</p>
-        <p class="infobox-username" *ngIf="myUser.rank">{{myUser.rank!}}</p>
-      </div>
-<!--        <div>-->
-<!--          <p class="align-left" *ngIf="following > 100">Following:</p><p class="align-right">{{following}}</p>-->
-<!--        </div>-->
+    <div class="contentContainer">
+      <mat-grid-list class="myPostsGridList" rowHeight="100%" cols="3">
+        <mat-grid-tile colspan="1"></mat-grid-tile>
+        <mat-grid-tile class="myPostsGridListTile" colspan="2">
+<!--          <div style="height: fit-content">-->
+<!--            <h1>See your contributions to the Site!</h1>-->
+<!--          </div>-->
+          <mat-list #matList class="myPostsList" *ngIf="this.posts && this.posts.length > 0" role="list">
+            <app-post role="listitem" *ngFor="let post of this.posts!" class="myPostsListItem" [post]="post"></app-post>
+            <button mat-icon-button (click)="goToTop()" style="position: fixed;bottom: 15px;
+  right: 15px;"><mat-icon>keyboard_arrow_up</mat-icon></button>
+          </mat-list>
+        </mat-grid-tile>
+      </mat-grid-list>
     </div>
-        <mat-list *ngIf="this.posts && this.posts.length > 0" >
-          <app-post *ngFor="let post of this.posts!" [post]="post"></app-post>
-        </mat-list>
-
   </mat-sidenav-content>
 </mat-sidenav-container>

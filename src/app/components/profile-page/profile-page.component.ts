@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {Router} from "@angular/router";
 import {PredictorDialogComponent} from "../landing-page/predictor-dialog/predictor-dialog.component";
 import {MatDialog} from "@angular/material/dialog";
@@ -10,17 +10,20 @@ import {AuthService} from "../../services/auth.service";
 import {CookieService} from "ngx-cookie-service";
 import {User} from "../../data-type/User";
 import {UserService} from "../../services/user.service";
+import {MatList} from "@angular/material/list";
 
 @Component({
   selector: 'app-profile-page',
   templateUrl: './profile-page.component.html',
   styleUrls: ['./profile-page.component.css']
 })
-export class ProfilePageComponent implements OnInit{
+export class ProfilePageComponent implements OnInit, AfterViewInit{
   posts : Post[] | undefined;
   markers : Marker[] | undefined;
 
   myUser : User | undefined;
+
+  @ViewChild("matList") postsMatList : MatList | undefined;
 
   constructor(private router: Router,
               public dialog : MatDialog,
@@ -44,6 +47,10 @@ export class ProfilePageComponent implements OnInit{
       this.myUser = result;
     })
   }
+
+  ngAfterViewInit() {
+  }
+
   goToLandingPage() {
     this.router.navigate(['../landing-page'])
   }
@@ -80,5 +87,13 @@ export class ProfilePageComponent implements OnInit{
     this.cookieService.set("token","")
     localStorage.removeItem('user')
     localStorage.removeItem('token')
+  }
+
+  goToTop() {
+    window.scroll({
+      top: 0,
+      left: 0,
+      behavior: 'smooth'
+    });
   }
 }

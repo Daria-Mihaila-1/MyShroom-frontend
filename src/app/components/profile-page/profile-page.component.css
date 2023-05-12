@@ -1,0 +1,42 @@
+.profilePageContent {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+
+.profilePageToolbar {
+width: 100%;
+
+}
+
+.profilePageContainer {
+  height: 100%;
+  width: 100%;
+}
+
+.contentContainer {
+  height: calc(100% - 64px);
+}
+.myPostsGridList {
+  height: 100%;
+}
+.myPostsGridListTile {
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+}
+.myPostsList {
+  width: 100%;
+  height: 100%;
+}
+.myPostsListItem {
+height: 100%;
+  width: 100%;
+}
+
+
