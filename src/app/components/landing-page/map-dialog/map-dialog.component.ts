@@ -162,7 +162,7 @@ export class MapDialogComponent implements OnInit{
 
     let deltaLatitude = (lat - myLat) * Math.PI / 180;
     let deltaLongitude = (lng - myLng) * Math.PI / 180;
-
+    //cos(a rad) * cos(b rad) * sin^2(deltaLongitude/2) + sin^2(delta latitude/2)
     let halfChordLength = Math.cos(myLat *Math.PI / 180) * Math.cos(lat * Math.PI / 180)
       * Math.sin(deltaLongitude/2) * Math.sin(deltaLongitude/2)
       + Math.sin(deltaLatitude/2) * Math.sin(deltaLatitude/2);

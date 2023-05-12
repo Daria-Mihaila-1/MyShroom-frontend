@@ -35,7 +35,7 @@ export class PredictorDialogComponent implements OnInit, AfterViewInit {
   }
 
   selectFile(event: any): void {
-
+this.predicted = false;
     this.preview = '';
     console.log("la inceput de selectFile")
 
@@ -54,7 +54,6 @@ export class PredictorDialogComponent implements OnInit, AfterViewInit {
         //will be base64 encoded string of File object
         this.preview = e.target.result;
       };
-
       reader.readAsDataURL(this.currentImg);
     }
   }

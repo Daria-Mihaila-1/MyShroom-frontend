@@ -25,16 +25,22 @@ export class PostComponent implements OnInit {
   signature = {
     "/9j/": "image/jpg"
   }
+  modifiedMushroomType : string ="";
   data_source:any = [];
 
   myId : number = -1;
   constructor(
   public dialog : MatDialog,
-  private postService : PostService, private userService:UserService, private snackbar: MatSnackBar,) {
+  private postService : PostService,
+  private userService:UserService,
+  private snackbar: MatSnackBar,) {
   }
 
   ngOnInit(): void {
     if (this.post){
+      // this.post will be still undefined in constructor
+      this.modifiedMushroomType = this.post.mushroomType[0] + this.post.mushroomType.substring(1).toLowerCase();
+
       this.userService.getUserById(this.post!.userId).subscribe( result => {
         this.myUser = result;
       })

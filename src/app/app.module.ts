@@ -6,6 +6,8 @@ import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatIconModule} from "@angular/material/icon";
+import { MatIconRegistry } from "@angular/material/icon";
+
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import { AppRoutingModule } from './app-routing.module';
 import {RouterModule} from "@angular/router";
@@ -18,7 +20,6 @@ import {MatDialogModule} from "@angular/material/dialog";
 import {MatDialogConfig} from "@angular/material/dialog";
 import {DragDropModule} from "@angular/cdk/drag-drop";
 import {NgxDropzoneModule} from "ngx-dropzone";
-// import {AgmCoreModule} from "@agm/core"
 import {AuthentificationInterceptor} from "./services/authentification.interceptor";
 import {GoogleMapsModule} from "@angular/google-maps";
 import {MatCardModule} from "@angular/material/card";
@@ -42,7 +43,8 @@ import { CreatePostComponent } from './components/create-post/create-post.compon
 import {MatSelectModule} from "@angular/material/select";
 import { ConfirmationDialogComponent } from './components/confirmation-dialog/confirmation-dialog.component';
 import { NotificationDialogComponent } from './components/notification-dialog/notification-dialog.component';
-
+import {ProfilePageComponent} from "./components/profile-page/profile-page.component";
+import { DomSanitizer } from "@angular/platform-browser";
 @NgModule({
   declarations: [
     AppComponent,
@@ -56,7 +58,8 @@ import { NotificationDialogComponent } from './components/notification-dialog/no
     PostDialogComponent,
     CreatePostComponent,
     ConfirmationDialogComponent,
-    NotificationDialogComponent
+    NotificationDialogComponent,
+    ProfilePageComponent
   ],
   imports: [
     BrowserModule,
@@ -94,7 +97,8 @@ import { NotificationDialogComponent } from './components/notification-dialog/no
   ],
   exports: [RouterModule],
   providers: [MatDialogConfig,
-    { provide: HTTP_INTERCEPTORS, useClass: AuthentificationInterceptor, multi: true }],
+    { provide: HTTP_INTERCEPTORS, useClass: AuthentificationInterceptor, multi: true }
+    ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

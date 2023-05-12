@@ -8,6 +8,7 @@ export class User {
 
   userName : string = "";
 
-  private rank:string ="";
-  private strikes :number = -1;
+   rank:string ="";
+  strikes :number = -1;
+  registerDate : string = "";
 }

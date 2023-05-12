@@ -78,8 +78,8 @@ export class LoginComponent implements OnInit {
           }
         },
         error: err => {
-          //TODO:Error dialog box
-          this.dialog.open(NotificationDialogComponent, {data: {notificationMessage:"Login failed \n username or password were wrong", notificationTitle:"Login failed"}})
+
+          this.dialog.open(NotificationDialogComponent, {data: {notificationMessage:err.error, notificationTitle:"Login failed"}})
           console.log(err)
     }
   });

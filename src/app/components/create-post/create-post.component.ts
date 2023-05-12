@@ -34,6 +34,7 @@ export class CreatePostComponent {
 
   };
   types: string[] | undefined;
+  mushroomTypes: string[] | undefined;
 
   createPostFormGroup = this.formbuilder.group(
     {
@@ -48,11 +49,15 @@ export class CreatePostComponent {
   constructor(private formbuilder: FormBuilder,
               private snackbar : MatSnackBar,
               private postService : PostService,
-              private dialogRef: MatDialogRef<CreatePostComponent>,
+              public dialogRef: MatDialogRef<CreatePostComponent>,
               @Inject(MAT_DIALOG_DATA) public data: {post:Post}) {
 
-    this.postService.getPostTypes().subscribe(result => {
-      this.types = result;
+    this.postService.getPostTypes().subscribe(result1 => {
+      this.types = result1;
+    })
+
+    this.postService.getMushroomTypes().subscribe(result2 => {
+      this.mushroomTypes = result2;
     })
 
     if (this.data) {

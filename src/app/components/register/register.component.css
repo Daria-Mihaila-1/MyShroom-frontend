@@ -9,3 +9,12 @@ div.form-wrapper.mat-form-field {
   width: 75%;
   margin-top: 25px;
 }
+.registerTitle {
+  margin-top: 20px;
+}
+
+.registerPageWrapper {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}

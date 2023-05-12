@@ -2,6 +2,7 @@
   <mat-sidenav #sidenav mode="over"  >
     <mat-nav-list>
       <p>MyShroom Menu</p>
+      <mat-list-item (click)="goToProfilePage()"><mat-icon>person</mat-icon>Profile</mat-list-item>
       <mat-list-item (click)="openPredictWindow()">Check my mushroom</mat-list-item>
       <mat-list-item (click)="openCreatePost()">Share your own Findings</mat-list-item>
       <mat-list-item (click)="signOut()"><mat-icon>exit_to_app</mat-icon>Sign out</mat-list-item>

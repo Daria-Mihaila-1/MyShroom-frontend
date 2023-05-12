@@ -1,4 +1,4 @@
-<mat-dialog-actions><button mat-button [disabled]="!this.circleExists" (click)="clearCircle()">clear circle</button>
+<mat-dialog-actions><button mat-button [disabled]="!this.circleExists" (click)="clearCircle()" *ngIf="circleRadius">clear circle</button>
   <google-map #map="googleMap" [width]="this.width!" [options]="this.options!" [height]="this.height!" (mapInitialized)="handleMapInitialized($event)">
     <map-marker #postMarker="mapMarker" *ngFor="let marker of this.markers; let indexOfelement=index" [position]="{lat:marker.lat, lng:marker.lng}"
                 (mapMouseover)="openInfoWindow(postMarker, indexOfelement)"

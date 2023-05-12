@@ -19,6 +19,8 @@ import {MapDialogComponent} from "./map-dialog/map-dialog.component";
 import {Marker} from "../../data-type/Marker";
 import {MapComponent} from "../map/map.component";
 import {CreatePostComponent} from "../create-post/create-post.component";
+import {MatIconRegistry} from "@angular/material/icon";
+import {DomSanitizer} from "@angular/platform-browser";
 const iconBase =
   "https://developers.google.com/maps/documentation/javascript/examples/full/images/";
 
@@ -62,15 +64,19 @@ export class LandingPageComponent implements OnInit, OnChanges, AfterViewInit {
               private postService: PostService,
               private authService : AuthService,
               private router : Router,
-              private cookieService: CookieService) {
+              private cookieService: CookieService,
+            private matIconRegistry: MatIconRegistry,
+              private domSanitizer: DomSanitizer
+  ) {
 
   }
 
 
 
   ngOnInit(): void {
-
-      this.postService.getPostsNotReportedByMe().subscribe(data => {
+//TODO : Vezi de ce nu merge SVG Icon
+//     this.matIconRegistry.addSvgIcon('unicorn', this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/mushroom_predictor_mushroom_icon(2).svg'));
+    this.postService.getPostsNotReportedByMe().subscribe(data => {
       this.posts = data.reverse();
       console.log(data)
       this.markers = this.posts.map((el => ({ lat: el.latitude, lng: el.longitude, type:el.type})));
@@ -199,6 +205,11 @@ export class LandingPageComponent implements OnInit, OnChanges, AfterViewInit {
   refreshList($event: Post[] | void) {
     console.log($event)
     window.location.reload();
+  }
+
+  goToProfilePage() {
+
+    this.router.navigate(['../profile', {posts: this.posts, markers:this.markers}])
   }
 }
 

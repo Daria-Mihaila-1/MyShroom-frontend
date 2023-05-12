@@ -1,5 +1,5 @@
 <div class="createPostHeading"> <h1 mat-dialog-title class="createPostDialogTitle">Create your own Post</h1>
-  <button mat-icon-button mat-dialog-close="" class="createPostExitBtn"
+  <button mat-icon-button class="createPostExitBtn"  (click)="this.dialogRef.close()"
           *ngIf="createPostFormGroup.value.postTitle == '' || createPostFormGroup.value.genus == '' || createPostFormGroup.value.type == '' || createPostFormGroup.value.description == '' "><mat-icon>close</mat-icon> </button>
 </div>
 <div mat-dialog-content class="createPostWrapper">
@@ -9,10 +9,16 @@
     <input matInput placeholder="Enter your desired title" formControlName="postTitle">
     <mat-hint>Type a suggestive title</mat-hint>
   </mat-form-field>
+<!--  <mat-form-field appearance="outline">-->
+<!--    <mat-label>The Genus of your Findings</mat-label>-->
+<!--    <input matInput placeholder="Enter the genus of your findings" formControlName="genus">-->
+<!--    <mat-hint>If you're not sure leave it empty</mat-hint>-->
+<!--  </mat-form-field>-->
   <mat-form-field appearance="outline">
-    <mat-label>The Genus of your Findings</mat-label>
-    <input matInput placeholder="Enter the genus of your findings" formControlName="genus">
-    <mat-hint>If you're not sure leave it empty</mat-hint>
+    <mat-label>Mushroom Type</mat-label>
+    <mat-select formControlName="genus">
+      <mat-option *ngFor="let mushroomType of this.mushroomTypes" [value]="mushroomType">{{mushroomType}}</mat-option>
+    </mat-select>
   </mat-form-field>
   <mat-form-field appearance="outline">
     <mat-label>A short Description</mat-label>
@@ -22,8 +28,7 @@
   <mat-form-field appearance="outline">
     <mat-label>Post Type</mat-label>
     <mat-select formControlName="type">
-      <mat-option *ngFor="let type of this.types" [value]="type">
-        {{type}}    </mat-option>
+      <mat-option *ngFor="let type of this.types" [value]="type">{{type}}</mat-option>
     </mat-select>
   </mat-form-field>
   <ngx-dropzone class="creatPostDropZone" [accept]="'image/*'" (change)="selectFile($event)" >
