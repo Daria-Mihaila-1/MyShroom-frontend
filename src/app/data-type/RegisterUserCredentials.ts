@@ -3,5 +3,6 @@ export class RegisterUserCredentials {
   lastName : string = "";
   userName : string = "";
   password : string = "";
+  profileImageIndex : number = -1;
 }
 

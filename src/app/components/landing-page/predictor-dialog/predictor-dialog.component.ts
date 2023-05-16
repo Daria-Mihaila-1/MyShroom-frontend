@@ -61,6 +61,13 @@ this.predicted = false;
 
   predict() : void {
     this.loading = true;
+
+    function reformatPrediction(prediction: Map<string, number>) {
+      prediction.forEach((value, key) => {
+        prediction.set(key, Number(value.toFixed(2)));
+      });
+    }
+
     if (this.currentImg) {
       const img: PredictionRequest = {
         base64Img : this.preview
@@ -68,8 +75,9 @@ this.predicted = false;
       this.imageUploadService.predict(img).subscribe(
         res => {
 
-          this.prediction = res.scores!
-          console.log(this.prediction)
+          this.prediction  = new Map(Object.entries(res.scores!));
+
+          reformatPrediction(this.prediction)
           this.loading = false;
           this.predicted = true;
         },
@@ -77,6 +85,7 @@ this.predicted = false;
             console.log("Error")
         }
       )
+
     }
 
   }

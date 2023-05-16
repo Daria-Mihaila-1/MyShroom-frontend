@@ -9,7 +9,7 @@
 
 .profilePageToolbar {
 width: 100%;
-
+background-color: aqua;
 }
 
 .profilePageContainer {
@@ -24,11 +24,17 @@ width: 100%;
   height: 100%;
 }
 .myPostsGridListTile {
-  overflow: auto;
+padding: 0;
+}
+
+.myPostsGridListTileWrapper {
   display: flex;
   flex-direction: column;
-  align-items: center;
-
+  height: 100%;
+  width: 100%;
+  margin-right: 0;
+  margin-left: 0;
+  padding: 0;
 }
 .myPostsList {
   width: 100%;
@@ -37,6 +43,102 @@ width: 100%;
 .myPostsListItem {
 height: 100%;
   width: 100%;
+  margin-bottom: 10px;
+}
+.myPostsListWrapper {
+  flex-grow: 1;
+  overflow-y: auto;
+  overflow-x:hidden;
+}
+.myPostsHeader {
+  /*background-color: ; !* Add any desired background color *!*/
+  padding: 10px;
+
 }
 
+.myPostsHeader h1 {
+  margin: 0;
+  text-align: center;
+}
 
+.myPostsListItemRow {
+  display: flex;
+  flex-flow: row wrap;
+  padding: 0;
+
+  width: 100%;
+  align-content: space-around;
+}
+
+.myPostsListItem {
+  flex-basis: 50%;
+
+}
+.profileWrapper {
+  height: 100%;
+  width: 100%;
+  background-color: #4e072b;
+  display: flex;
+  flex-direction: column;
+}
+
+.profileImg {
+  width: 43%;
+  height: auto;
+  margin-bottom: 20px;
+  border: 1px solid #7b3cc3;
+  border-radius: 50%;
+  box-shadow: 1px 1px 59px #a376d5;
+
+}
+.profile-card {
+  padding-left: 0;
+  padding-right: 0;
+  padding-top:40px;
+  padding-bottom:0;
+  border-radius: 0 0 5px 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #0F080F;
+  height: fit-content;
+  width: 100%;
+  box-shadow: 1px 0 30px #7b3cc3;
+}
+.profile-card-content {
+  width: 100%;
+}
+
+.name {
+  color: blue;
+  text-align: center;
+}
+.userRank {
+  padding-left: 20px;
+  color: #cccccc;
+  align-self: flex-start;
+}
+.rankListItem  {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.strikesCount {
+  padding-left: 20px;
+  color: #cccccc;
+  align-self: flex-start;
+}
+.informationContainter {
+  background-color:#0F080F;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+.informationContainter.registerDate {
+  align-self: flex-end;
+  color: #cccccc;
+}
+mat-list-item {
+  height: 5220px;
+}

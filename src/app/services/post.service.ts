@@ -14,6 +14,7 @@ let GET_MY_POSTS: string = ""
 let GET_POSTS_NOT_REPORTED_BY_ME : string = ""
 let GET_POSTS_TYPES: string = ""
 let GET_MUSHROOM_TYPES: string = ""
+let GET_MY_REPORTED_POSTS: string = ""
 @Injectable({
   providedIn: 'root'
 })
@@ -30,6 +31,7 @@ export class PostService {
     DELETE = bodyURL + "delete/"
     UPDATE = bodyURL + "update"
     GET_MY_POSTS = bodyURL + "get-my-posts/"
+    GET_MY_REPORTED_POSTS = bodyURL +  "get-posts-reported-by/"
   }
 
   getAllPosts():Observable<any>{
@@ -61,5 +63,10 @@ export class PostService {
 
   getMyPosts() : Observable<Post[]>{
     return this.httpClient.get<Post[]>(GET_MY_POSTS+ localStorage.getItem('user'))
+  }
+
+  getMyReportedPosts() : Observable<Post[]> {
+    return this.httpClient.get<Post[]>(GET_MY_REPORTED_POSTS + localStorage.getItem('user'))
+
   }
 }

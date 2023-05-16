@@ -18,11 +18,16 @@ import {MatList} from "@angular/material/list";
   styleUrls: ['./profile-page.component.css']
 })
 export class ProfilePageComponent implements OnInit, AfterViewInit{
-  posts : Post[] | undefined;
+  myPosts : Post[] | undefined;
+  myReportedPosts : Post[] | undefined;
   markers : Marker[] | undefined;
 
   myUser : User | undefined;
-
+  modifiedUserRank : string | undefined;
+  sharedPostsPercentage : number = 0;
+   postsNumberUpperBound : number = 0;
+   profileImageArray : string[]= [];
+   myProfileImg : string = "";
   @ViewChild("matList") postsMatList : MatList | undefined;
 
   constructor(private router: Router,
@@ -32,23 +37,60 @@ export class ProfilePageComponent implements OnInit, AfterViewInit{
               private authService : AuthService,
               private userService : UserService,
               ) {
+
+    this.profileImageArray = ["/assets/fairy_PNG96.png", "/assets/little_mushroom.png", "/assets/little_mushroom_profile_img.png"]
+
+    this.userService.getUserById(parseInt(localStorage.getItem('user')!)).subscribe( result => {
+      this.myUser = result;
+      this.myProfileImg = this.profileImageArray[this.myUser?.profileImageIndex!]
+      console.log(this.myUser)
+      this.modifiedUserRank = this.myUser!.rank[0] + this.myUser!.rank.substring(1).toLowerCase();
+    },
+      error => {
+        this.router.navigate(['../login'])
+        console.log("token probably expired")
+        console.log(error)
+        localStorage.setItem("tokenStatus", "isExpired")
+      })
+
+    this.postService.getMyPosts().subscribe(data => {
+        this.myPosts = data.reverse();
+        this.markers = this.myPosts.map((el => ({lat: el.latitude, lng: el.longitude, type: el.type})));
+        if (this.myUser?.rank == 'BEGINNER'){
+          this.sharedPostsPercentage = 100*this.myPosts.length/5
+          this.postsNumberUpperBound = 5;
+        }
+        else if (this.myUser?.rank == 'INTERMEDIATE') {
+          this.sharedPostsPercentage = 100*this.myPosts.length/15
+        this.postsNumberUpperBound = 15;
+        }
+        else {
+          this.sharedPostsPercentage = 100
+        }
+
+        //TODO: fa markerele pe tipuri
+      },
+      error => {
+        this.router.navigate(['../login'])
+        console.log("token probably expired")
+        localStorage.setItem("tokenStatus", "isExpired")
+      })
+
+    this.postService.getMyReportedPosts().subscribe( result =>
+    {
+      this.myReportedPosts = result;
+
+    })
   }
 
   ngOnInit() {
-    this.postService.getMyPosts().subscribe(data => {
-      this.posts = data.reverse();
-      console.log(data)
-      this.markers = this.posts.map((el => ({lat: el.latitude, lng: el.longitude, type: el.type})));
 
-      //TODO: fa markerele pe tipuri
-    })
 
-    this.userService.getUserById(parseInt(localStorage.getItem('user')!)).subscribe( result =>{
-      this.myUser = result;
-    })
+
   }
 
   ngAfterViewInit() {
+
   }
 
   goToLandingPage() {
@@ -69,8 +111,8 @@ export class ProfilePageComponent implements OnInit, AfterViewInit{
     {
       this.postService.getPostsNotReportedByMe().subscribe(data =>
         {
-          this.posts = data.reverse();
-          this.markers = this.posts.map((el => ({ lat: el.latitude, lng: el.longitude, type:el.type})));
+          this.myPosts = data.reverse();
+          this.markers = this.myPosts.map((el => ({ lat: el.latitude, lng: el.longitude, type:el.type})));
         },
         err => {
 

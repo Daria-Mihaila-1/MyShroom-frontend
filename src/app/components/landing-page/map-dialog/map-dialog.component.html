@@ -20,7 +20,7 @@
       <input type="text" matInput [formControl]="myControl" [matAutocomplete]="auto" (change)="resetMapValues($event)"  >
       <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" (optionSelected)='showPostsOnMap($event.option.value)'  >
         <mat-option *ngFor="let post of this.filteredGenuses! | async" [value]="post">
-          {{post.mushroomType}}
+          {{post.mushroomType[0] + post.mushroomType.substring(1).toLowerCase()}}
         </mat-option>
       </mat-autocomplete>
     </mat-form-field>

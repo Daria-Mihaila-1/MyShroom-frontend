@@ -13,9 +13,11 @@ mat-card {
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: fit-content;
-  padding-left: 0;
-  padding-right: 0;
+  height: 95%;
+
+  padding: 0;
+  margin-left: 5px;
+  margin-right: 5px;
 }
 mat-card.post_action {
   margin:0;
@@ -23,6 +25,10 @@ mat-card.post_action {
 }
 .post_action.mat-icon-button {
   margin:0 0 0 0;
+}
+.postMatCard {
+  width : 80%;
+  height : 100%
 }
 
 .post_title {
@@ -53,7 +59,7 @@ mat-card-header {
 }
 .post_image {
   width: 100%;
-  height:250px;
+  height:auto;
   object-fit: cover;
 
 }

@@ -10,7 +10,14 @@ import {
   ViewChild
 } from '@angular/core';
 import {Marker} from "../../data-type/Marker";
-import {GoogleMap, MapCircle, MapInfoWindow, MapMarker} from "@angular/google-maps";
+import {
+  GoogleMap,
+  MapCircle,
+  MapInfoWindow,
+  MapMarker,
+  MapMarkerClusterer,
+  MarkerClustererOptions
+} from "@angular/google-maps";
 import {MapDialogComponent} from "../landing-page/map-dialog/map-dialog.component";
 import {MatDialog} from "@angular/material/dialog";
 import {Post} from "../../data-type/Post";
@@ -47,6 +54,8 @@ export class MapComponent implements OnInit, OnChanges, AfterViewInit, OnDestroy
   circleRadius : number = 0;
   closestMarkers : Marker[] = [];
   circleExists : boolean = false;
+  markerClustererImagePath = 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m';
+@ViewChild("mapMarkerClusterer") mapMarkerClusterer : MapMarkerClusterer;
   constructor(public dialog : MatDialog) {
     if (!navigator.geolocation) {
       console.log("navigator not supported")
@@ -63,6 +72,7 @@ export class MapComponent implements OnInit, OnChanges, AfterViewInit, OnDestroy
         },
       )
     }
+
     this.myLat = parseFloat(localStorage.getItem("myLat")!)
     this.myLng = parseFloat(localStorage.getItem("myLng")!)
     this.watchPosition();

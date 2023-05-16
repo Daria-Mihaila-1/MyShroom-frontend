@@ -11,4 +11,5 @@ export class User {
    rank:string ="";
   strikes :number = -1;
   registerDate : string = "";
+  profileImageIndex : number = -1;
 }

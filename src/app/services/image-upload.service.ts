@@ -16,7 +16,6 @@ export class ImageUploadService {
   predict(file: PredictionRequest): Observable<PredictionResponse>{
 
     file.base64Img = file.base64Img.split(",")[1]
-
     return this.httpClient.post<PredictionResponse>(this.baseUrl + "/predict",file );
     };
 }

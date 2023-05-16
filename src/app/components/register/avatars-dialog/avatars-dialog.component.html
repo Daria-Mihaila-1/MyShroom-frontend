@@ -1,0 +1,12 @@
+<h1 mat-dialog-title>
+  Choose an avatar for your profile
+</h1>
+<mat-dialog-content class="dialogContent">
+
+  <div class="avatarGridListWrapper">
+      <div  class="avatarImgWrapper"  *ngFor="let avatar of avatars; let i=index" (click)="selectAvatar(i)">
+        <img [src]="avatar" alt="Avatar" class="avatarImage"/>
+      </div>
+  </div>
+  <button mat-button class="confirmSelectionBtn" (click)="confirmSelection()">confirm selection</button>
+</mat-dialog-content>

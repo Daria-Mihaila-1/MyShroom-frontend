@@ -25,16 +25,59 @@
     </mat-toolbar>
     <div class="contentContainer">
       <mat-grid-list class="myPostsGridList" rowHeight="100%" cols="3">
-        <mat-grid-tile colspan="1"></mat-grid-tile>
+        <mat-grid-tile colspan="1">
+          <div class="profileWrapper">
+
+            <mat-card class="profile-card">
+              <img  [src]="this.myProfileImg" class="profileImg" alt="Profile Image">
+              <mat-card-content class="profile-card-content">
+                <h1 mat-card-title class="name">{{myUser?.userName}}</h1>
+                <h3 mat-card-subtitle class="name">{{this.myUser?.firstName!}} {{this.myUser?.lastName!}}</h3>
+                <div class="profile-card-extra-info">
+                  <h3 class="userRank" *ngIf="modifiedUserRank === 'Expert'"><mat-icon>star</mat-icon>Rank: {{this.modifiedUserRank!}}</h3>
+                  <h3 class="userRank" *ngIf="modifiedUserRank != 'Expert'">Rank: {{this.modifiedUserRank!}}</h3>
+                  <h3 class="strikesCount"> Reported posts count: {{this.myUser?.strikes}}</h3>
+                </div>
+              </mat-card-content>
+            </mat-card>
+            <div class="informationContainter">
+              <mat-list class="informationList">
+                <mat-list-item >
+                  <div class="rankListItem">
+                    <span style="color:#cccccc">During your stay you have shared {{this.myPosts?.length}} posts </span>
+                    <mat-progress-bar mode="determinate" style="padding-top: 15px" [value]=this.sharedPostsPercentage matTooltip="You have {{this.postsNumberUpperBound - this.postsNumberUpperBound * this.sharedPostsPercentage/100}} posts to go until your rank increases" title="shared Posts"></mat-progress-bar>
+                  </div>
+                </mat-list-item>
+                <mat-list-item style="color:#cccccc">
+                  Reported posts number: {{this.myReportedPosts?.length}}
+                </mat-list-item>
+              <mat-list-item style="color:#cccccc">
+                <h3 class="registerDate">A member since {{myUser?.registerDate}}</h3>
+              </mat-list-item>
+              </mat-list>
+            </div>
+          </div>
+
+        </mat-grid-tile>
         <mat-grid-tile class="myPostsGridListTile" colspan="2">
-<!--          <div style="height: fit-content">-->
-<!--            <h1>See your contributions to the Site!</h1>-->
-<!--          </div>-->
-          <mat-list #matList class="myPostsList" *ngIf="this.posts && this.posts.length > 0" role="list">
-            <app-post role="listitem" *ngFor="let post of this.posts!" class="myPostsListItem" [post]="post"></app-post>
-            <button mat-icon-button (click)="goToTop()" style="position: fixed;bottom: 15px;
-  right: 15px;"><mat-icon>keyboard_arrow_up</mat-icon></button>
-          </mat-list>
+          <div *ngIf="this.myPosts && this.myPosts.length > 0" class="myPostsGridListTileWrapper">
+            <div class="myPostsListWrapper">
+            <div  class="myPostsHeader">
+              <h1>See your contributions to the Site!</h1>
+            </div>
+
+              <mat-list #matList class="myPostsList" *ngIf="this.myPosts && this.myPosts.length > 0" role="list">
+                <div class="myPostsListItemRow">
+                  <ng-container *ngFor="let post of this.myPosts!">
+                    <app-post role="listitem" class="myPostsListItem" [post]="post"></app-post>
+                  </ng-container>
+                </div>
+              </mat-list>
+            </div>
+          </div>
+          <div *ngIf="this.myPosts && this.myPosts!.length == 0">
+            <h1 style="color: dimgrey">No posts shared yet</h1>
+          </div>
         </mat-grid-tile>
       </mat-grid-list>
     </div>

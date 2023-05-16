@@ -1,0 +1,30 @@
+.avatarGridListWrapper {
+  height: auto;
+  width: 100%;
+padding-top: 30px;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-evenly;
+}
+
+.avatarImage {
+  height: 100px;
+  width: 100px;
+  /*margin-bottom: 20px;*/
+  /*margin-top: 20px;*/
+  /*margin-left: 10px;*/
+  /*margin-right: 10px;*/
+  border: 1px solid #7b3cc3;
+  border-radius: 50%;
+
+}
+.dialogContent {
+  display: flex;
+  flex-flow: row wrap;
+  height: 100%;
+  width: 100%;
+}
+.confirmSelectionBtn {
+  align-self: flex-end;
+}
+

@@ -44,7 +44,10 @@ import {MatSelectModule} from "@angular/material/select";
 import { ConfirmationDialogComponent } from './components/confirmation-dialog/confirmation-dialog.component';
 import { NotificationDialogComponent } from './components/notification-dialog/notification-dialog.component';
 import {ProfilePageComponent} from "./components/profile-page/profile-page.component";
-import { DomSanitizer } from "@angular/platform-browser";
+import {MatProgressBarModule} from "@angular/material/progress-bar";
+import {MatTooltipModule} from "@angular/material/tooltip";
+import {MaterialFileInputModule} from "ngx-material-file-input";
+import { AvatarsDialogComponent } from './components/register/avatars-dialog/avatars-dialog.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -59,7 +62,8 @@ import { DomSanitizer } from "@angular/platform-browser";
     CreatePostComponent,
     ConfirmationDialogComponent,
     NotificationDialogComponent,
-    ProfilePageComponent
+    ProfilePageComponent,
+    AvatarsDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -92,7 +96,10 @@ import { DomSanitizer } from "@angular/platform-browser";
     MatProgressSpinnerModule,
     MatToolbarModule,
     MatTabsModule,
-    MatSelectModule
+    MatSelectModule,
+    MatProgressBarModule,
+    MatTooltipModule,
+    MaterialFileInputModule
 
   ],
   exports: [RouterModule],

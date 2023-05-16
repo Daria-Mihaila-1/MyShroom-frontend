@@ -30,9 +30,16 @@
         <mat-error *ngIf="this.userCredentialsFormGroup.controls['password'].invalid">nu merge passwd</mat-error>
         <mat-hint>Type your password</mat-hint>
       </mat-form-field>
+      <mat-form-field appearance="outline">
+        <input matInput formControlName="avatar" placeholder="Choose your profile image" (click)="openAvatarsDialog()" [readonly]="true">
+<!--        <mat-icon (click)="openAvatarsDialog()">photo</mat-icon>-->
+      </mat-form-field>
+<!--      <img [src]="userCredentialsFormGroup.get('avatar')!.value" *ngIf="userCredentialsFormGroup.get('avatar')!.value" alt="Selected Avatar">-->
+
     </div>
     <div class="button-wrapper">
       <button mat-raised-button type="submit">Register</button>
     </div>
   </form>
+  <button mat-button (click)="openAvatarsDialog()"> open avatars</button>
 </div>

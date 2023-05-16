@@ -1,12 +1,13 @@
 <mat-dialog-actions><button mat-button [disabled]="!this.circleExists" (click)="clearCircle()" *ngIf="circleRadius">clear circle</button>
   <google-map #map="googleMap" [width]="this.width!" [options]="this.options!" [height]="this.height!" (mapInitialized)="handleMapInitialized($event)">
+    <map-marker-clusterer #mapMarkerClusterer [minimumClusterSize]="3" [zoomOnClick]="true" [imagePath]="markerClustererImagePath">
     <map-marker #postMarker="mapMarker" *ngFor="let marker of this.markers; let indexOfelement=index" [position]="{lat:marker.lat, lng:marker.lng}"
                 (mapMouseover)="openInfoWindow(postMarker, indexOfelement)"
                 (mapMouseout)="closeInfoWindow(postInfoWindow!)"
                 (mapClick)="openPost(marker)">
       <map-info-window class="postInfoWindow" #postInfoWindow="mapInfoWindow"></map-info-window>
     </map-marker>
-
+    </map-marker-clusterer>
     <map-circle #circle="mapCircle" > </map-circle>
     <map-marker #marker="mapMarker" [position]="{lat:this.myLat!, lng:this.myLng!}" [icon]="this.myLocationMarkerImage!" (mapMouseover)="openInfoWindow(marker)" (mapMouseout)="closeInfoWindow(myInfoWindow)">
       <map-info-window #myInfoWindow="mapInfoWindow" ></map-info-window></map-marker>
