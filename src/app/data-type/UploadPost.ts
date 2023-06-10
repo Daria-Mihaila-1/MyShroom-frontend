@@ -7,7 +7,6 @@ export class UploadPost {
  description : string = "";
  base64Img : string = "";
 
- attachments : Document[] =[];
  userId : number = -1;
   type : string = "";
 }

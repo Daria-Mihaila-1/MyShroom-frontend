@@ -7,6 +7,9 @@ import {PredictionRequest} from "../../../data-type/PredictionRequest";
 import {CdkDragDrop} from "@angular/cdk/drag-drop";
 import {KeyValue} from "@angular/common";
 import {MatSidenavContent} from "@angular/material/sidenav";
+import {MushroomImgService} from "../../../services/mushroom-img.service";
+import {map} from "rxjs";
+import {MushroomImg} from "../../../data-type/MushroomImg";
 
 
 @Component({
@@ -21,12 +24,14 @@ export class PredictorDialogComponent implements OnInit, AfterViewInit {
   prediction : Map<string, number> = new Map<string, number>();
   loading : boolean = false;
   predicted = false;
+  imgsMat : Map<string,MushroomImg[]> = new Map<string, MushroomImg[]>();
 
   @ViewChild(MatSidenavContent) matSidenavContent: MatSidenavContent | undefined;
   @ViewChild('sidenav') si: MatSidenavContent | undefined;
 
   constructor(public dialogRef: MatDialogRef<PredictorDialogComponent>,
-              private imageUploadService: ImageUploadService) {
+              private imageUploadService: ImageUploadService,
+              private mushroomImgService : MushroomImgService) {
 
   }
 
@@ -80,6 +85,22 @@ this.predicted = false;
           reformatPrediction(this.prediction)
           this.loading = false;
           this.predicted = true;
+          let i = 0
+          this.prediction.forEach((value:number, key:string) =>
+
+            this.mushroomImgService.getMushroomsByGenus(key).subscribe( result=>
+            {
+              console.log(result)
+
+                result.forEach(value => {
+                  let content_type = "data:image/jpg;base64"
+                  value.base64Img = content_type + "," + value.base64Img;
+                })
+                this.imgsMat.set(key, result)
+              }
+
+            )
+          )
         },
         err => {
             console.log("Error")
@@ -91,9 +112,7 @@ this.predicted = false;
   }
 
 
-
     onRemove(event: any) {
-        console.log(this.currentImg)
        this.currentImg = undefined;
        this.preview = ''
       this.prediction = new Map<string, number>();

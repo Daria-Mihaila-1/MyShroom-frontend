@@ -1,10 +1,10 @@
 <div  class="predictorDialogWrapper">
-<div class="predictorDialogHeading" >
-  <h1 mat-dialog-title>Check genus of your finding</h1>
-  <button mat-icon-button class="createPostExitBtn" (click)="this.dialogRef.close()"><mat-icon>close</mat-icon> </button>
-</div>
-<mat-dialog-content class="predictorDialogContent">
-  <label>Choose an image</label>
+  <div class="predictorDialogHeading" >
+    <h1 mat-dialog-title>Check genus of your finding</h1>
+    <button mat-icon-button class="createPostExitBtn" (click)="this.dialogRef.close()"><mat-icon>close</mat-icon> </button>
+  </div>
+  <mat-dialog-content class="predictorDialogContent">
+    <label>Choose an image</label>
 
     <ngx-dropzone class="predictorDropZone"[multiple]="false" [accept]="'image/*'" (change)="selectFile($event)">
       <ngx-dropzone-label>
@@ -17,17 +17,43 @@
       </ngx-dropzone-image-preview>
     </ngx-dropzone>
 
-  <div mat-dialog-actions align="center">
-  <button mat-raised-button [disabled]="currentImg == undefined || this.predicted" (click)="predict()">
-    <div class="predictButtonContent"><mat-spinner *ngIf="this.loading"></mat-spinner>
-    Predict
+    <div mat-dialog-actions align="center">
+      <button mat-raised-button [disabled]="currentImg == undefined || this.predicted" (click)="predict()">
+        <div class="predictButtonContent"><mat-spinner *ngIf="this.loading"></mat-spinner>
+          Predict
+        </div>
+      </button>
     </div>
-  </button>
-  </div>
-  <mat-list>
-    <mat-list-item *ngFor="let pred of this.prediction!| keyvalue:mySortingFunction">
-    <p>Genus: <b>{{pred.key}} </b>  and Probability:  <b>{{pred.value}}%</b></p></mat-list-item>
-  </mat-list>
-</mat-dialog-content>
+    <div *ngIf="predicted" class="predictionListWrapper" >
+      <mat-list class="predictionList">
+        <mat-list-item *ngFor="let pred of this.prediction!| keyvalue:mySortingFunction" class="predictionContainer">
+          <div class="predictionContent">
+            <h2><b>Genus: <b>{{pred.key}} </b>  and Probability:  <b>{{pred.value}}%</b></b></h2>
+            <h3 style="margin-top: 5px"><b>Edible</b> species from this genus:</h3>
+            <div class="scrollable-grid-container">
+              <mat-grid-list cols="5" rowHeight="150px" style="width: 1000px" >
+                <mat-grid-tile *ngFor="let imageObject of this.imgsMat.get(pred.key) " class="imgToDisplayTile">
+                  <img *ngIf="!imageObject.poisonous" [src]="imageObject.base64Img" class="displayImg" alt="exampleImages">
+
+                </mat-grid-tile>
+              </mat-grid-list>
+            </div >
+            <h3 style="margin-top: 15px"><b>Poisonous</b> species from this genus:</h3>
+
+            <div class="scrollable-grid-container">
+
+              <mat-grid-list cols="5" rowHeight="150px" style="width: 1000px" >
+                <mat-grid-tile *ngFor="let imageObject of this.imgsMat.get(pred.key) " class="imgToDisplayTile">
+                  <img *ngIf="imageObject.poisonous" [src]="imageObject.base64Img" class="displayImg" alt="exampleImages">
+
+                </mat-grid-tile>
+              </mat-grid-list>
+            </div>
+
+          </div>
+        </mat-list-item>
+      </mat-list>
+    </div>
+  </mat-dialog-content>
 
 </div>

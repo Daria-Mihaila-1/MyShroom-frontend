@@ -31,9 +31,8 @@ export class RegisterComponent implements OnInit {
 
     let main_dir = "/assets/avatars/"
     this.avatars  = [main_dir + "fairy_.png",
-      main_dir + "mushroom_.png",  main_dir + "forager_.png", main_dir + "towering_mushroom_.png"]
-
-
+      main_dir + "forager_.png",
+      main_dir + "mushroom_.png",  main_dir + "mushrooms_.png", main_dir + "towering_mushroom_.png"]
   }
 
   ngOnInit(): void {

@@ -13,7 +13,6 @@ import {UserService} from "../../services/user.service";
 import {MatList} from "@angular/material/list";
 import {ConfirmationDialogComponent} from "../confirmation-dialog/confirmation-dialog.component";
 import {MapDialogComponent} from "../landing-page/map-dialog/map-dialog.component";
-import {DialogConfig} from "@angular/cdk/dialog";
 
 @Component({
   selector: 'app-profile-page',
@@ -65,7 +64,8 @@ export class ProfilePageComponent implements OnInit, AfterViewInit{
 
     let main_dir = "/assets/avatars/"
     this.avatars  = [main_dir + "fairy_.png",
-      main_dir + "mushroom_.png",  main_dir + "forager_.png", main_dir + "towering_mushroom_.png"]
+      main_dir + "forager_.png",
+      main_dir + "mushroom_.png",  main_dir + "mushrooms_.png", main_dir + "towering_mushroom_.png"]
     if(this.myUser?.strikes == 1)
       this.strikesCountColor = "#00cc00"
     else if (this.myUser?.strikes == 2)
@@ -75,8 +75,9 @@ export class ProfilePageComponent implements OnInit, AfterViewInit{
 
       this.userService.getUserById(parseInt(localStorage.getItem('user')!)).subscribe( result => {
           this.myUser = result;
+
           this.myProfileImg = this.avatars[this.myUser?.profileImageIndex!]
-          console.log(this.myUser?.profileImageIndex)
+          console.log(this.myUser)
           this.modifiedUserRank = this.myUser!.rank[0] + this.myUser!.rank.substring(1).toLowerCase();
         },
         error => {
@@ -126,11 +127,7 @@ export class ProfilePageComponent implements OnInit, AfterViewInit{
         localStorage.setItem("tokenStatus", "isExpired")
       })
 
-    this.postService.getMyReportedPosts().subscribe( result =>
-    {
-      this.myReportedPosts = result;
 
-    })
   }
 
   openCreatePost() {

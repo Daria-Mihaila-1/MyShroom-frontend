@@ -1,14 +1,17 @@
 ::ng-deep.mat-dialog-container {
     padding: 0;
-
     overflow: hidden;
     height: 100%;
     margin: 0;
-  width: fit-content;
+    width: fit-content;
     border-radius: 30px;
     background-color: rgba(143, 180, 143, 0.95);
   }
 
+.predictorDialogWrapper {
+  display: flex;
+  flex-direction: column;
+}
 
 .dropFileLabel {
   border: none;
@@ -36,6 +39,7 @@ button.div.mat-spinner {
   align-items: center;
   justify-content: center;
   width: 80%;
+  min-height:182px;
   padding: 0;
   margin:0;
 }
@@ -45,7 +49,8 @@ button.div.mat-spinner {
   flex-direction: column;
   width: 600px;
   height: 500px;
-  margin-top: 100px;
+  margin-top: 20px;
+
 }
 .predictorImgPreview {
   display: flex;
@@ -53,3 +58,40 @@ button.div.mat-spinner {
 
   align-items: stretch;
 }
+.prediction {
+  align-items: center;
+
+}
+.predictionContainer {
+  height:auto;
+  width : 100%;
+}
+.predictionContent {
+  flex-direction: column;
+  width: 100%;
+  display: flex;
+  margin-top: 10px;
+  margin-bottom: 10px;
+
+}
+.predictionListWrapper {
+  width: 96%;
+  overflow: auto;
+
+}
+.predictionList {
+  width: 100%;
+  flex-direction: column;
+}
+
+.displayImg {
+  width: auto;
+  height: 100%;
+  object-fit: cover;
+  margin: 0 5px 0 5px;
+}
+
+.scrollable-grid-container {
+  min-width: 100%;
+  overflow-x: auto;
+  }

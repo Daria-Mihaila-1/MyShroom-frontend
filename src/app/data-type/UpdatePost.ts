@@ -1,5 +1,4 @@
-import {Doc} from "./Doc";
-import {User} from "./User";
+;
 
 export class UpdatePost{
   id! : number;
@@ -9,7 +8,6 @@ export class UpdatePost{
   longitude!: number;
   description : string = "";
   base64Img : string ="";
-  attachments : Doc[] =[];
   userId : number = -1;
   type: string = "";
 

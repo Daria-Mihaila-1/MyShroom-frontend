@@ -1,4 +1,3 @@
-import {Doc} from "./Doc";
 import {User} from "./User";
 
 export class Post {
@@ -11,7 +10,7 @@ export class Post {
   base64Img : string ="";
   date: string ="";
   time: string ="";
-  attachments : Doc[] =[];
+
   userId : number = -1;
   type: string = "";
 

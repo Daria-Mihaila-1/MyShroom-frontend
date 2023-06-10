@@ -182,7 +182,6 @@ export class CreatePostComponent {
             longitude: this.location!.lng(),
             description: valuesFromForm.description!,
             base64Img: this.base64Img.split(",")[1],
-            attachments: [],
             type: post_type,
             userId: parseInt(localStorage.getItem('user')!)
 
@@ -200,7 +199,6 @@ export class CreatePostComponent {
       else {
         const newPost: UploadPost=
           {
-            attachments: [],
             base64Img: this.base64Img.split(",")[1],
             description: valuesFromForm.description!,
             latitude: this.location!.lat(),
