@@ -3,28 +3,26 @@
     <mat-nav-list>
       <p>MyShroom Menu</p>
       <mat-list-item (click)="goToProfilePage()"><mat-icon>person</mat-icon>Profile</mat-list-item>
-      <mat-list-item (click)="openPredictWindow()">Check my mushroom</mat-list-item>
+      <mat-list-item (click)="openPredictWindow()">  <img class="icon" src="assets/mushroom_predictor_mushroom_icon(2).svg"/>Check my mushroom</mat-list-item>
       <mat-list-item (click)="openCreatePost()">Share your own Findings</mat-list-item>
       <mat-list-item (click)="signOut()">Sign out<mat-icon>exit_to_app</mat-icon></mat-list-item>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
-  <mat-toolbar class="landingPageToolbar">
+    <div class="coverImg">
+    <mat-toolbar class="landingPageToolbar">
       <button id="menu-button" mat-icon-button (click)="sidenav.toggle()"><mat-icon>menu</mat-icon></button>
   </mat-toolbar>
-  <mat-grid-list class="items_list"cols="2" rowHeight="100px">
+    </div>
+    <mat-grid-list class="items_list" cols="2" rowHeight="110px">
 
-  <mat-grid-tile class="img-wrapper" colspan="2" rowspan="2.5" >
-    <mat-chip> MyShroom</mat-chip>
-        <img class="cover-img" src="../../../assets/mush_cover.jpeg" alt="Cover Img"/>
-  </mat-grid-tile>
 
   <mat-grid-tile #mapContainer colspan="2" rowspan="4" id="myMapGridTile">
     <app-map  [options]="this.myOptions" [width]="this.width" [height]="403" [markers]="this.markers!" [posts]="this.posts!" (dblclick)="this.openMapDialog()"></app-map>
   </mat-grid-tile>
 
-  <mat-grid-tile  class="post_tile" colspan="2" rowspan="5" *ngFor="let post of this.posts">
-    <app-post [post]="post"
+  <mat-grid-tile  class="post_tile" colspan="2" rowspan="6" *ngFor="let post of this.posts">
+    <app-post [post]="post" [isInDialog]="false"
               (deletePostEvent)="deletePost($event)"
               (updatePostEvent)="refreshList($event)"
               (reportPostEvent)="refreshList($event)"></app-post>

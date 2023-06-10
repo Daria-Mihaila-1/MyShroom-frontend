@@ -1,9 +1,21 @@
-.dialog_post {
-  height: 100%;
-  width: 100%;
-}
-.post-dialog-wrapper{
+
+/*.app-post.dialog_post {*/
+/*  height: auto;*/
+/*  width: 100%;*/
+/*}*/
+
+.post-dialog-wrapper {
+  border-radius: 20px;
+  display: flex;
+  margin: 0;
   height: fit-content;
-  width: 600px;
-  overflow: hidden;
+  flex-direction: column;
+  align-items: stretch;
+  width: 550px;
+  padding: 0;
+  overflow-y:visible;
+}
+
+.dialog_post {
+margin-top : 10px;
 }

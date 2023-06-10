@@ -64,7 +64,7 @@ this.predicted = false;
 
     function reformatPrediction(prediction: Map<string, number>) {
       prediction.forEach((value, key) => {
-        prediction.set(key, Number(value.toFixed(2)));
+        prediction.set(key,Math.floor(value * Math.pow(10, 2)) / Math.pow(10, 2)*100);
       });
     }
 

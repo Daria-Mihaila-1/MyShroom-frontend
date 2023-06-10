@@ -1,7 +1,7 @@
 import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {Router} from "@angular/router";
 import {PredictorDialogComponent} from "../landing-page/predictor-dialog/predictor-dialog.component";
-import {MatDialog} from "@angular/material/dialog";
+import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 import {CreatePostComponent} from "../create-post/create-post.component";
 import {PostService} from "../../services/post.service";
 import {Post} from "../../data-type/Post";
@@ -11,6 +11,9 @@ import {CookieService} from "ngx-cookie-service";
 import {User} from "../../data-type/User";
 import {UserService} from "../../services/user.service";
 import {MatList} from "@angular/material/list";
+import {ConfirmationDialogComponent} from "../confirmation-dialog/confirmation-dialog.component";
+import {MapDialogComponent} from "../landing-page/map-dialog/map-dialog.component";
+import {DialogConfig} from "@angular/cdk/dialog";
 
 @Component({
   selector: 'app-profile-page',
@@ -26,62 +29,10 @@ export class ProfilePageComponent implements OnInit, AfterViewInit{
   modifiedUserRank : string | undefined;
   sharedPostsPercentage : number = 0;
    postsNumberUpperBound : number = 0;
-   profileImageArray : string[]= [];
+   avatars : string[]= [];
    myProfileImg : string = "";
+   strikesCountColor : string = ""
   @ViewChild("matList") postsMatList : MatList | undefined;
-
-  constructor(private router: Router,
-              public dialog : MatDialog,
-              private postService : PostService,
-              private cookieService : CookieService,
-              private authService : AuthService,
-              private userService : UserService,
-              ) {
-
-    this.profileImageArray = ["/assets/fairy_PNG96.png", "/assets/little_mushroom.png", "/assets/little_mushroom_profile_img.png"]
-
-    this.userService.getUserById(parseInt(localStorage.getItem('user')!)).subscribe( result => {
-      this.myUser = result;
-      this.myProfileImg = this.profileImageArray[this.myUser?.profileImageIndex!]
-      console.log(this.myUser)
-      this.modifiedUserRank = this.myUser!.rank[0] + this.myUser!.rank.substring(1).toLowerCase();
-    },
-      error => {
-        this.router.navigate(['../login'])
-        console.log("token probably expired")
-        console.log(error)
-        localStorage.setItem("tokenStatus", "isExpired")
-      })
-
-    this.postService.getMyPosts().subscribe(data => {
-        this.myPosts = data.reverse();
-        this.markers = this.myPosts.map((el => ({lat: el.latitude, lng: el.longitude, type: el.type})));
-        if (this.myUser?.rank == 'BEGINNER'){
-          this.sharedPostsPercentage = 100*this.myPosts.length/5
-          this.postsNumberUpperBound = 5;
-        }
-        else if (this.myUser?.rank == 'INTERMEDIATE') {
-          this.sharedPostsPercentage = 100*this.myPosts.length/15
-        this.postsNumberUpperBound = 15;
-        }
-        else {
-          this.sharedPostsPercentage = 100
-        }
-
-        //TODO: fa markerele pe tipuri
-      },
-      error => {
-        this.router.navigate(['../login'])
-        console.log("token probably expired")
-        localStorage.setItem("tokenStatus", "isExpired")
-      })
-
-    this.postService.getMyReportedPosts().subscribe( result =>
-    {
-      this.myReportedPosts = result;
-
-    })
-  }
 
   ngOnInit() {
 
@@ -104,21 +55,95 @@ export class ProfilePageComponent implements OnInit, AfterViewInit{
     });
   }
 
+  constructor(private router: Router,
+              public dialog : MatDialog,
+              private postService : PostService,
+              private cookieService : CookieService,
+              private authService : AuthService,
+              private userService : UserService,
+  ) {
+
+    let main_dir = "/assets/avatars/"
+    this.avatars  = [main_dir + "fairy_.png",
+      main_dir + "mushroom_.png",  main_dir + "forager_.png", main_dir + "towering_mushroom_.png"]
+    if(this.myUser?.strikes == 1)
+      this.strikesCountColor = "#00cc00"
+    else if (this.myUser?.strikes == 2)
+      this.strikesCountColor = "#ff6600"
+    else if (this.myUser?.strikes == 3)
+      this.strikesCountColor = "#ff0000"
+
+      this.userService.getUserById(parseInt(localStorage.getItem('user')!)).subscribe( result => {
+          this.myUser = result;
+          this.myProfileImg = this.avatars[this.myUser?.profileImageIndex!]
+          console.log(this.myUser?.profileImageIndex)
+          this.modifiedUserRank = this.myUser!.rank[0] + this.myUser!.rank.substring(1).toLowerCase();
+        },
+        error => {
+          this.router.navigate(['../login'])
+          console.log("token probably expired")
+          console.log(error)
+          localStorage.setItem("tokenStatus", "isExpired")
+        })
+
+    this.postService.getMyPosts().subscribe(data => {
+        this.myPosts = data.reverse();
+        this.markers = this.myPosts.map((el => ({lat: el.latitude, lng: el.longitude, type: el.type})));
+
+      for (let i = 0; i < this.myPosts.length; i++) {
+        if (this.myPosts[i].type == "INFO") {
+          this.markers[i].type = "assets/green_pin.png"
+          this.myPosts[i].type = "Info"
+        } else if (this.myPosts[i].type == "BEAR_ALERT") {
+          this.markers[i].type = "/assets/red_pin_cuter.png"
+          this.myPosts[i].type = "Bear Alert"
+
+        } else if (this.myPosts[i].type == "POISONOUS") {
+          this.markers[i].type = "/assets/rsz_1purple_pin.png"
+          this.myPosts[i].type = "Poisonous"
+        }
+      }
+        if (this.myUser?.rank == 'BEGINNER'){
+          this.sharedPostsPercentage = 100*this.myPosts.length/5
+          this.postsNumberUpperBound = 5;
+        }
+        else if (this.myUser?.rank == 'INTERMEDIATE') {
+          this.sharedPostsPercentage = 100*this.myPosts.length/15
+          this.postsNumberUpperBound = 15;
+        }
+        else {
+          this.sharedPostsPercentage = 100
+        }
+        for (let i = 0; i < this.myPosts.length; i++){
+          let mushroomTypeRaw = this.myPosts[i].mushroomType
+          this.myPosts[i].mushroomType =  mushroomTypeRaw.charAt(0) + mushroomTypeRaw.substring(1).toLowerCase();
+        }
+
+      },
+      error => {
+        this.router.navigate(['../login'])
+        console.log("token probably expired")
+        localStorage.setItem("tokenStatus", "isExpired")
+      })
+
+    this.postService.getMyReportedPosts().subscribe( result =>
+    {
+      this.myReportedPosts = result;
+
+    })
+  }
+
   openCreatePost() {
+
+
     let dialogRef = this.dialog.open(CreatePostComponent)
 
     dialogRef.afterClosed().subscribe( result =>
     {
-      this.postService.getPostsNotReportedByMe().subscribe(data =>
-        {
-          this.myPosts = data.reverse();
-          this.markers = this.myPosts.map((el => ({ lat: el.latitude, lng: el.longitude, type:el.type})));
-        },
-        err => {
-
-          this.router.navigate(['../login'])
-          localStorage.setItem("tokenStatus", "isExpired")
-        })
+      console.log(result)
+      if (result) {
+       window.location.reload()
+      }
     })
   }
 
@@ -137,5 +162,35 @@ export class ProfilePageComponent implements OnInit, AfterViewInit{
       left: 0,
       behavior: 'smooth'
     });
+  }
+
+  deleteAccount() {
+    const dialogResponse = this.dialog.open(ConfirmationDialogComponent, {
+      width: '250px', data: "Are you sure you want to delete your account?",
+      autoFocus: false
+    });
+    dialogResponse.afterClosed().subscribe(result => {
+      if (result) {
+        this.userService.delete().subscribe(result =>
+          console.log(result));
+        localStorage.removeItem('user');
+        localStorage.removeItem('role');
+        localStorage.setItem("tokenStatus", "notExpired");
+        this.router.navigate(['../login'])
+      }
+    });
+  }
+
+  openMapDialog() {
+    let dialogConfig = new MatDialogConfig();
+    dialogConfig.data = {markers:this.markers, posts:this.myPosts, fromProfile:true}
+    this.dialog.open(MapDialogComponent, dialogConfig)
+  }
+
+  deletePost($event: number) {
+
+    this.postService.deletePost($event).subscribe( data => {
+      window.location.reload();
+    })
   }
 }

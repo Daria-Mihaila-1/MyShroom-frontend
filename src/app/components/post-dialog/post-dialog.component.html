@@ -1,6 +1,5 @@
 <div class="post-dialog-wrapper">
-  <mat-dialog-content >
     <button mat-icon-button mat-dialog-close=""><mat-icon>close</mat-icon> </button>
-    <app-post class="dialog_post" #appPost *ngIf="this.data" [post]="this.data"></app-post>
-  </mat-dialog-content>
+    <app-post [isInDialog]="true" class="dialog_post" #appPost *ngIf="this.data" [post]="this.data"></app-post>
+
 </div>

@@ -46,6 +46,7 @@ export class CreatePostComponent {
    currentImg: File | undefined;
   base64Img :string = '';
   buttonText : string ="Post";
+  dialogTitle: string;
   constructor(private formbuilder: FormBuilder,
               private snackbar : MatSnackBar,
               private postService : PostService,
@@ -54,16 +55,30 @@ export class CreatePostComponent {
 
     this.postService.getPostTypes().subscribe(result1 => {
       this.types = result1;
+      // Boolean expression? First statement : second statement
+      this.types = this.types!.map(value => value.indexOf("_") != -1?
+        value.split("_")[0].charAt(0) + value.split("_")[0].substring(1, value.indexOf("_")).toLowerCase()+" " +value.split("_")[1].charAt(0) +value.split("_")[1].substring(1) .toLowerCase()
+        :
+        value.charAt(0) + value.substring(1).toLowerCase())
+
+
     })
 
     this.postService.getMushroomTypes().subscribe(result2 => {
       this.mushroomTypes = result2;
+      this.mushroomTypes = this.mushroomTypes!.map(value => value.charAt(0) + value.substring(1).toLowerCase())
+
     })
 
     if (this.data) {
       const existingPost = this.data.post;
       this.buttonText = "Update Post"
+      this.dialogTitle = "Update your Post"
       this.initializeForm(existingPost)
+    }
+    else {
+      this.dialogTitle = "Create your own Post"
+
     }
     if (localStorage.getItem('user'))
     {
@@ -89,7 +104,6 @@ export class CreatePostComponent {
     const reader = new FileReader();
     let blob = this.base64toBlob(this.base64Img, content_type);
     reader.onload = (e: any) => {
-
       //will be base64 encoded string of File object
       this.base64Img = e.target.result;
     };
@@ -146,22 +160,30 @@ export class CreatePostComponent {
     const valuesFromForm= this.createPostFormGroup.value;
     let errors= this.validateForm();
 
+    let post_type = ""
+    if(valuesFromForm.type?.indexOf(" ") != -1) {
+      post_type = valuesFromForm.type?.split(" ")[0].toUpperCase() +"_" + valuesFromForm.type?.split(" ")[1].toUpperCase()
+    }
+    else {
+      post_type = valuesFromForm.type!.toUpperCase()
+    }
+    console.log(valuesFromForm.genus!.toUpperCase())
     if(errors=="")
     {
 
       if (this.data){
-        console.log(this.data.post.id)
+
         const newPost: UpdatePost=
           {
             id : this.data.post!.id,
             title: valuesFromForm.postTitle!,
-            mushroomType: valuesFromForm.genus!,
+            mushroomType: valuesFromForm.genus!.toUpperCase(),
             latitude: this.location!.lat(),
             longitude: this.location!.lng(),
             description: valuesFromForm.description!,
             base64Img: this.base64Img.split(",")[1],
             attachments: [],
-            type: valuesFromForm.type!,
+            type: post_type,
             userId: parseInt(localStorage.getItem('user')!)
 
           };
@@ -183,8 +205,8 @@ export class CreatePostComponent {
             description: valuesFromForm.description!,
             latitude: this.location!.lat(),
             longitude: this.location!.lng(),
-            mushroomType: valuesFromForm.genus!,
-            type: valuesFromForm.type!,
+            mushroomType: valuesFromForm.genus!.toUpperCase(),
+            type: post_type,
             userId: parseInt(localStorage.getItem('user')!),
             title: valuesFromForm.postTitle!
 
@@ -196,7 +218,9 @@ export class CreatePostComponent {
           this.currentImg = undefined;
           this.dialogRef.close(result);
         })
+
       }
+
     }
     else {
       this.snackbar.open(errors, "Ok", {verticalPosition:"top"})

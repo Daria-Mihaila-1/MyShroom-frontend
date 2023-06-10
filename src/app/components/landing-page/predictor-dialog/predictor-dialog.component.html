@@ -1,21 +1,22 @@
+<div  class="predictorDialogWrapper">
 <div class="predictorDialogHeading" >
+  <h1 mat-dialog-title>Check genus of your finding</h1>
   <button mat-icon-button class="createPostExitBtn" (click)="this.dialogRef.close()"><mat-icon>close</mat-icon> </button>
-  <h1 mat-dialog-title>Insert file here</h1>
 </div>
-<mat-dialog-content>
+<mat-dialog-content class="predictorDialogContent">
   <label>Choose an image</label>
 
-    <ngx-dropzone [accept]="'image/*'" (change)="selectFile($event)">
+    <ngx-dropzone class="predictorDropZone"[multiple]="false" [accept]="'image/*'" (change)="selectFile($event)">
       <ngx-dropzone-label>
         <h2>Drag file here</h2>
         <p>or</p>
         <h2>Click to upload from your local files</h2>
       </ngx-dropzone-label>
-      <ngx-dropzone-image-preview ngProjectAs="ngx-dropzone-preview"  *ngIf="currentImg != null" [file]="this.currentImg!" [removable]="true" (removed)="onRemove(this.currentImg)">
+      <ngx-dropzone-image-preview class="predictorImgPreview"
+                                  ngProjectAs="ngx-dropzone-preview"  *ngIf="currentImg != null" [file]="this.currentImg!" [removable]="true" (removed)="onRemove(this.currentImg)">
       </ngx-dropzone-image-preview>
     </ngx-dropzone>
 
-<!--TODO:add closing button to all dialogs to be nice-->
   <div mat-dialog-actions align="center">
   <button mat-raised-button [disabled]="currentImg == undefined || this.predicted" (click)="predict()">
     <div class="predictButtonContent"><mat-spinner *ngIf="this.loading"></mat-spinner>
@@ -25,7 +26,8 @@
   </div>
   <mat-list>
     <mat-list-item *ngFor="let pred of this.prediction!| keyvalue:mySortingFunction">
-    <p>Genus: <b>{{pred.key}} </b>  and Probability:  <b>{{pred.value}}</b></p></mat-list-item>
+    <p>Genus: <b>{{pred.key}} </b>  and Probability:  <b>{{pred.value}}%</b></p></mat-list-item>
   </mat-list>
 </mat-dialog-content>
 
+</div>

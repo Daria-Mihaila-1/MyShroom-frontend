@@ -1,19 +1,17 @@
-<div class="createPostHeading"> <h1 mat-dialog-title class="createPostDialogTitle">Create your own Post</h1>
-  <button mat-icon-button class="createPostExitBtn"  (click)="this.dialogRef.close()"
-          *ngIf="createPostFormGroup.value.postTitle == '' || createPostFormGroup.value.genus == '' || createPostFormGroup.value.type == '' || createPostFormGroup.value.description == '' "><mat-icon>close</mat-icon> </button>
+<div class="createPostWrapper">
+  <div class="createPostHeading">
+    <h1 mat-dialog-title class="createPostDialogTitle">{{this.dialogTitle}}</h1>
+  <button mat-icon-button class="createPostExitBtn"  (click)="this.dialogRef.close()">
+    <mat-icon>close</mat-icon>
+  </button>
 </div>
-<div mat-dialog-content class="createPostWrapper">
+<div mat-dialog-content class="createPostContentWrapper">
 <form class="first-form" [formGroup]="createPostFormGroup" >
   <mat-form-field appearance="outline" class="firstFormField">
     <mat-label>Your Post's Title</mat-label>
     <input matInput placeholder="Enter your desired title" formControlName="postTitle">
     <mat-hint>Type a suggestive title</mat-hint>
   </mat-form-field>
-<!--  <mat-form-field appearance="outline">-->
-<!--    <mat-label>The Genus of your Findings</mat-label>-->
-<!--    <input matInput placeholder="Enter the genus of your findings" formControlName="genus">-->
-<!--    <mat-hint>If you're not sure leave it empty</mat-hint>-->
-<!--  </mat-form-field>-->
   <mat-form-field appearance="outline">
     <mat-label>Mushroom Type</mat-label>
     <mat-select formControlName="genus">
@@ -40,11 +38,12 @@
     <ngx-dropzone-image-preview ngProjectAs="ngx-dropzone-preview"  *ngIf="currentImg != null" [file]="this.currentImg!" [removable]="true" (removed)="onRemove(this.currentImg)">
     </ngx-dropzone-image-preview>
   </ngx-dropzone>
-</form>
+
   <mat-dialog-actions>
     <button mat-stroked-button type="submit" class="addButton" color="primary" (click)="createOrUpdatePost()">{{this.buttonText}}</button>
-    <button mat-stroked-button color="primary" (click)="clearForm()">Clear</button>
+    <button mat-stroked-button color="primary"  type="button" (click)="clearForm()">Clear</button>
   </mat-dialog-actions>
+</form>
 
   <div class="createPostMapWrapper">
     <mat-label>Select the location of your finding</mat-label>
@@ -54,4 +53,5 @@
 
     </google-map>
   </div>
+</div>
 </div>

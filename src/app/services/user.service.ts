@@ -8,6 +8,7 @@ import {Post} from "../data-type/Post";
 
 let REPORT : string;
 let GET_USER_BY_ID : string;
+let DELETE : string;
 let bodyURL:string = "";
 @Injectable({
   providedIn: 'root'
@@ -19,6 +20,7 @@ export class UserService {
 
     REPORT = bodyURL + "report"
     GET_USER_BY_ID = bodyURL + "get-user-by-id/"
+    DELETE = bodyURL + "delete/"
 
   }
 
@@ -29,5 +31,9 @@ export class UserService {
 
   getUserById(id : number) : Observable<any> {
     return this.httpClient.get(GET_USER_BY_ID + id);
+  }
+
+  delete() :Observable<User> {
+    return this.httpClient.delete<User>(DELETE + localStorage.getItem('user'))
   }
 }

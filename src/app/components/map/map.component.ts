@@ -1,6 +1,6 @@
 import {
   AfterViewInit,
-  Component,
+  Component, DoCheck,
   ElementRef, EventEmitter,
   Input,
   OnChanges, OnDestroy,
@@ -18,25 +18,23 @@ import {
   MapMarkerClusterer,
   MarkerClustererOptions
 } from "@angular/google-maps";
-import {MapDialogComponent} from "../landing-page/map-dialog/map-dialog.component";
-import {MatDialog} from "@angular/material/dialog";
+import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 import {Post} from "../../data-type/Post";
 import {PostDialogComponent} from "../post-dialog/post-dialog.component";
-import {Subject} from "rxjs";
 
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.css']
 })
-export class MapComponent implements OnInit, OnChanges, AfterViewInit, OnDestroy {
+export class MapComponent implements OnInit, OnChanges, AfterViewInit{
 
   @Input() options!: google.maps.MapOptions ;
   @Input() markers: Marker[] | undefined;
   @Input() width: number | undefined;
   @Input() height: number | undefined;
   @Input() posts: Post[] | undefined;
-  @Input('createCircleSubject') createCircleSubject : Subject<[Marker[], number]> | undefined
+  @Input('createCircleSubject') createCircleSubject :{markers: Marker[], distance: number}
 
   @Output() newItemEvent = new EventEmitter<google.maps.LatLng>();
 
@@ -49,13 +47,18 @@ export class MapComponent implements OnInit, OnChanges, AfterViewInit, OnDestroy
   myLat: number = 0;
   myLng: number = 0;
   myLocationMarkerImage = "https://img.icons8.com/material-rounded/38/000000/marker.png"
-  markerOptions!: google.maps.MarkerOptions;
+
+  myMarkerOptions!: google.maps.MarkerOptions;
 
   circleRadius : number = 0;
   closestMarkers : Marker[] = [];
+  markerOptions!: google.maps.MarkerOptions;
   circleExists : boolean = false;
   markerClustererImagePath = 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m';
 @ViewChild("mapMarkerClusterer") mapMarkerClusterer : MapMarkerClusterer;
+
+
+
   constructor(public dialog : MatDialog) {
     if (!navigator.geolocation) {
       console.log("navigator not supported")
@@ -72,7 +75,6 @@ export class MapComponent implements OnInit, OnChanges, AfterViewInit, OnDestroy
         },
       )
     }
-
     this.myLat = parseFloat(localStorage.getItem("myLat")!)
     this.myLng = parseFloat(localStorage.getItem("myLng")!)
     this.watchPosition();
@@ -82,18 +84,9 @@ export class MapComponent implements OnInit, OnChanges, AfterViewInit, OnDestroy
 
     if (this.createCircleSubject) {
       console.log("subscribe")
-      this.createCircleSubject?.subscribe(data => {
-        this.closestMarkers = data[0]
-        this.circleRadius = data[1]
-        this.mapCircle?.circle?.setMap(this.mapElement.googleMap!)
-        this.circleExists = true;
-        this.mapCircle?.circle?.setOptions( {
-          center: {lat: this.myLat!, lng:this.myLng!},
-          radius: this.circleRadius
-        })
-        this.centerMapToCircle()
-
-      })
+    }
+    else{
+      console.log("undefined circle")
     }
 
   }
@@ -114,7 +107,6 @@ export class MapComponent implements OnInit, OnChanges, AfterViewInit, OnDestroy
 
     }
 
-
   watchPosition() {
     let id = navigator.geolocation.watchPosition((position) => {
       this.myLat = position.coords.latitude
@@ -130,7 +122,25 @@ export class MapComponent implements OnInit, OnChanges, AfterViewInit, OnDestroy
       })
   }
 
+
   ngOnChanges(changes:SimpleChanges) {
+
+    if(this.createCircleSubject) {
+      this.closestMarkers = this.createCircleSubject.markers;
+      this.circleRadius = this.createCircleSubject.distance;
+      if (this.closestMarkers.length != 0) {
+        this.mapCircle?.circle?.setMap(this.mapElement.googleMap!)
+        this.circleExists = true;
+        console.log("circle exists")
+        this.mapCircle?.circle?.setOptions({
+          center: {lat: this.myLat!, lng: this.myLng!},
+          radius: this.circleRadius
+        })
+        this.centerMapToCircle()
+      } else {
+        this.clearCircle()
+      }
+    }
 
   }
 
@@ -138,10 +148,12 @@ export class MapComponent implements OnInit, OnChanges, AfterViewInit, OnDestroy
 
     this.newItemEvent.emit(new google.maps.LatLng({lat:this.myLat, lng:this.myLng}))
 
-    this.markerOptions = { position:{lat:this.myLat, lng:this.myLng},
+    this.myMarkerOptions = {
+        position:{lat:this.myLat, lng:this.myLng},
       map
     }
-
+    this.markerOptions = {
+      animation: google.maps.Animation.DROP}
   }
 
   openPost(marker: Marker) {
@@ -150,10 +162,14 @@ export class MapComponent implements OnInit, OnChanges, AfterViewInit, OnDestroy
       post.latitude == marker.lat && post.longitude == marker.lng
     )
 
-    let dialogRef = this.dialog.open(PostDialogComponent, {data : filteredPosts![0]})
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.height="600px"
+    dialogConfig.data  = filteredPosts![0]
+    // {data:filteredPosts![0]}
+    let dialogRef = this.dialog.open(PostDialogComponent,dialogConfig)
   }
 
-  //TODO: vezi de ce nu apare poza care trebuie
+
   openInfoWindow(marker: MapMarker, indexOfelement: number = -1) {
     console.log(indexOfelement)
     if(indexOfelement == -1) {
@@ -190,9 +206,5 @@ export class MapComponent implements OnInit, OnChanges, AfterViewInit, OnDestroy
       this.circleExists = !this.circleExists;
       this.centerMap()
     }
-  }
-
-  ngOnDestroy(){
-    this.createCircleSubject?.unsubscribe()
   }
 }

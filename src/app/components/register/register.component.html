@@ -1,45 +1,54 @@
 <div class="registerPageWrapper">
-  <div class="registerTitle">
-    <h1>Welcome! Let's create your profile</h1>
+  <div class="form-wrapper">
+    <div class="registerTitle">
+      <h1>Welcome! Let's create your profile</h1>
+    </div>
+
+    <form [formGroup]="userCredentialsFormGroup" (ngSubmit)="registerUser()">
+      <div class="form_inputs">
+        <img class="avatarPreview"
+             style="margin-bottom: 10px; margin-top: 10px"
+             [src]="[this.avatars[selectedAvatar]]" *ngIf="selectedAvatar != -1"
+             alt="avatarImg" (click)="selectedAvatar = -1; showDeleteOption = false"
+             (mouseenter)="showDeleteOption = true"
+             (mouseleave)="showDeleteOption = false">
+        <span *ngIf="showDeleteOption"><mat-icon>close</mat-icon></span>
+
+        <button mat-button class="avatarButton" matSuffix type="button" (click)="openAvatarsDialog()" formControlName="avatar"  *ngIf="selectedAvatar == -1">
+          choose avatar
+        </button>
+        <mat-form-field appearance="outline">
+          <mat-label style="color:#000;">First Name</mat-label>
+          <input matInput placeholder="Enter your first name" formControlName="firstName">
+          <mat-error *ngIf="this.userCredentialsFormGroup.controls['firstName'].invalid">first name must start with Upper Case</mat-error>
+          <mat-hint>Type your first name</mat-hint>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label style="color:#000;">Last Name</mat-label>
+          <input matInput placeholder="Enter your last name" formControlName="lastName">
+          <mat-hint>Type your last name</mat-hint>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label style="color:#000;">Username</mat-label>
+          <input matInput placeholder="Enter your desired username" formControlName="userName">
+          <mat-error *ngIf="this.userCredentialsFormGroup.controls['userName'].invalid">invalid username</mat-error>
+          <mat-hint>Type your username</mat-hint>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label style="color:#000;">Password</mat-label>
+          <input matInput [type]="hide ? 'password' : 'text'" placeholder="Enter your password" formControlName="password">
+          <mat-error *ngIf="this.userCredentialsFormGroup.controls['password'].invalid">Password must be 8 or more Letters long</mat-error>
+          <mat-hint>Type your password</mat-hint>
+        </mat-form-field>
+
+        <div class="button-wrapper">
+          <button  type="submit" class="registerBtn">Register</button>
+        </div>
+        <button  type="button" mat-button (click)="goToLogin()">Back to login</button>
+      </div>
+
+    </form>
+
   </div>
-  <form [formGroup]="userCredentialsFormGroup" (ngSubmit)="registerUser()">
-    <div class="form-wrapper">
-      <mat-form-field appearance="outline">
-        <mat-label>First Name</mat-label>
-        <input matInput placeholder="Enter your first name" formControlName="firstName">
-        <mat-error *ngIf="this.userCredentialsFormGroup.controls['firstName'].invalid">nu merge username </mat-error>
-        <mat-hint>Type your first name</mat-hint>
-      </mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-label>Last Name</mat-label>
-        <input matInput placeholder="Enter your last name" formControlName="lastName">
-        <mat-error *ngIf="this.userCredentialsFormGroup.controls['lastName'].invalid">nu merge username </mat-error>
-        <mat-hint>Type your last name</mat-hint>
-      </mat-form-field>
-      <mat-form-field appearance="outline">
-      <mat-label>Username</mat-label>
-      <input matInput placeholder="Enter your desired username" formControlName="userName">
-      <mat-error *ngIf="this.userCredentialsFormGroup.controls['userName'].invalid">nu merge username </mat-error>
-      <mat-hint>Type your username</mat-hint>
-    </mat-form-field>
-
-      <mat-form-field appearance="outline">
-        <mat-label>Password</mat-label>
-        <input matInput [type]="hide ? 'password' : 'text'" placeholder="Enter your password" formControlName="password">
-        <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
-        <mat-error *ngIf="this.userCredentialsFormGroup.controls['password'].invalid">nu merge passwd</mat-error>
-        <mat-hint>Type your password</mat-hint>
-      </mat-form-field>
-      <mat-form-field appearance="outline">
-        <input matInput formControlName="avatar" placeholder="Choose your profile image" (click)="openAvatarsDialog()" [readonly]="true">
-<!--        <mat-icon (click)="openAvatarsDialog()">photo</mat-icon>-->
-      </mat-form-field>
-<!--      <img [src]="userCredentialsFormGroup.get('avatar')!.value" *ngIf="userCredentialsFormGroup.get('avatar')!.value" alt="Selected Avatar">-->
-
-    </div>
-    <div class="button-wrapper">
-      <button mat-raised-button type="submit">Register</button>
-    </div>
-  </form>
-  <button mat-button (click)="openAvatarsDialog()"> open avatars</button>
 </div>

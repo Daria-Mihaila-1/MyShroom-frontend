@@ -1,29 +1,18 @@
-.preview {
-  max-width: 200px;
-}
+::ng-deep.mat-dialog-container {
+    padding: 0;
 
-mat-dialog-content{
-  width: 600px;
-  height: 500px;
+    overflow: hidden;
+    height: 100%;
+    margin: 0;
+  width: fit-content;
+    border-radius: 30px;
+    background-color: rgba(143, 180, 143, 0.95);
+  }
 
-}
-
-.file-input {
-  display: none;
-}
-
-.drop-zone {
-  border: #ccc dashed 2px;
-  padding: 20px 10px;
-  box-sizing: border-box;
-  margin-top: 15px;
-  display: flex;
-}
 
 .dropFileLabel {
   border: none;
 }
-
 
 predictButtonContent {
   display: flex;
@@ -33,4 +22,34 @@ predictButtonContent {
 button.div.mat-spinner {
   height: 10px;
   width: 100%;
+}
+
+.predictorDialogHeading {
+  padding: 10px 10px 10px 10px ;
+  display: flex;
+  justify-content: space-between;
+}
+
+.predictorDropZone {
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80%;
+  padding: 0;
+  margin:0;
+}
+.predictorDialogContent {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  width: 600px;
+  height: 500px;
+  margin-top: 100px;
+}
+.predictorImgPreview {
+  display: flex;
+  justify-content: center;
+
+  align-items: stretch;
 }

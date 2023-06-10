@@ -8,7 +8,7 @@ import {
   ViewChild
 } from '@angular/core';
 import {PredictorDialogComponent} from "./predictor-dialog/predictor-dialog.component";
-import {MatDialog} from "@angular/material/dialog";
+import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 import {PostService} from "../../services/post.service";
 import {Post} from "../../data-type/Post";
 import {AuthService} from "../../services/auth.service";
@@ -17,10 +17,8 @@ import { HostListener } from "@angular/core";
 import {CookieService} from "ngx-cookie-service";
 import {MapDialogComponent} from "./map-dialog/map-dialog.component";
 import {Marker} from "../../data-type/Marker";
-import {MapComponent} from "../map/map.component";
 import {CreatePostComponent} from "../create-post/create-post.component";
-import {MatIconRegistry} from "@angular/material/icon";
-import {DomSanitizer} from "@angular/platform-browser";
+
 const iconBase =
   "https://developers.google.com/maps/documentation/javascript/examples/full/images/";
 
@@ -65,34 +63,34 @@ export class LandingPageComponent implements OnInit, OnChanges, AfterViewInit {
               private authService : AuthService,
               private router : Router,
               private cookieService: CookieService,
-            private matIconRegistry: MatIconRegistry,
-              private domSanitizer: DomSanitizer
+
   ) {
 
   }
 
-
-
   ngOnInit(): void {
-//TODO : Vezi de ce nu merge SVG Icon
-//     this.matIconRegistry.addSvgIcon('unicorn', this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/mushroom_predictor_mushroom_icon(2).svg'));
+
     this.postService.getPostsNotReportedByMe().subscribe(data => {
       this.posts = data.reverse();
-      console.log(data)
-      this.markers = this.posts.map((el => ({ lat: el.latitude, lng: el.longitude, type:el.type})));
+        this.markers = this.posts.map((el => ({ lat: el.latitude, lng: el.longitude, type:el.type})));
 
-        //TODO: fa markerele pe tipuri
-        for (let i = 0; i < this.markers.length; i++){
-        if (this.markers[i].type == "INFO"){
-          this.markers[i].type = iconBase + "/.png"
+        for (let i = 0; i < this.posts.length; i++){
+          if (this.posts[i].type == "INFO"){
+            this.markers[i].type = "assets/green_pin.png"
+            this.posts[i].type = "Info"
+          }
+          else if(this.posts[i].type == "BEAR_ALERT"){
+            this.markers[i].type = "/assets/red_pin_cuter.png"
+            this.posts[i].type = "Bear Alert"
+
+          }
+          else if(this.posts[i].type == "POISONOUS"){
+            this.markers[i].type ="/assets/rsz_1purple_pin.png"
+            this.posts[i].type = "Poisonous"
+          }
+          let mushroomTypeRaw = this.posts[i].mushroomType
+          this.posts[i].mushroomType =  mushroomTypeRaw.charAt(0) + mushroomTypeRaw.substring(1).toLowerCase();
         }
-        else if(this.markers[i].type == "BEAR_ALERT"){
-          this.markers[i].type = iconBase + "/bear.png"
-        }
-        else if(this.markers[i].type == "POISONOUS"){
-          this.markers[i].type = iconBase + "/alert.png"
-        }
-      }
 
       },
       err => {
@@ -111,13 +109,14 @@ export class LandingPageComponent implements OnInit, OnChanges, AfterViewInit {
 
   openMapDialog() :void {
     const dialogRef = this.dialog.open(MapDialogComponent, {
-      data: {markers:this.markers,posts:this.posts},
+      data: {markers:this.markers,posts:this.posts, fromProfile:false},
     })
   }
   openPredictWindow(): void {
+     const dialogRef = this.dialog.open(PredictorDialogComponent, {
+      data: {img:"random"},
+      panelClass: 'rounded-dialog'
 
-    const dialogRef = this.dialog.open(PredictorDialogComponent, {
-    data: {img:"ceva random boss"}
   });
 
 
@@ -149,21 +148,19 @@ export class LandingPageComponent implements OnInit, OnChanges, AfterViewInit {
       this.postService.getPostsNotReportedByMe().subscribe(data =>
       {
         this.posts = data.reverse();
-        this.markers = this.posts.map((el => ({ lat: el.latitude, lng: el.longitude, type:el.type})));
 
-
-        for (let i = 0; i < this.markers.length; i++){
-          if (this.markers[i].type == "INFO"){
-            this.markers[i].type = iconBase + "/.png"
+        for (let i = 0; i < this.posts.length; i++){
+          if (this.posts[i].type == "INFO"){
+            this.posts[i].type = "assets/green_pin.png"
           }
-          else if(this.markers[i].type == "BEAR_ALERT"){
-            this.markers[i].type = iconBase + "/bear.png"
+          else if(this.posts[i].type == "BEAR_ALERT"){
+            this.posts[i].type = "/assets/red_pin_cuter.png"
           }
-          else if(this.markers[i].type == "POISONOUS"){
-            this.markers[i].type = iconBase + "/alert.png"
+          else if(this.posts[i].type == "POISONOUS"){
+            this.posts[i].type ="/assets/rsz_1purple_pin.png"
           }
         }
-
+        this.markers = this.posts.map((el => ({ lat: el.latitude, lng: el.longitude, type:el.type})));
       },
         err => {
           console.log("token probably expired")
@@ -193,12 +190,7 @@ export class LandingPageComponent implements OnInit, OnChanges, AfterViewInit {
   deletePost($event: number) {
 
     this.postService.deletePost($event).subscribe( data => {
-      console.log("deleted post " + $event)
-      console.log(data)
-      let deletedPostIndex =this.getPostIndex(data)
-      if (deletedPostIndex < this.posts.length) {
-        this.posts.splice(deletedPostIndex, 1)
-      }
+     window.location.reload();
     })
   }
 

@@ -48,6 +48,9 @@ import {MatProgressBarModule} from "@angular/material/progress-bar";
 import {MatTooltipModule} from "@angular/material/tooltip";
 import {MaterialFileInputModule} from "ngx-material-file-input";
 import { AvatarsDialogComponent } from './components/register/avatars-dialog/avatars-dialog.component';
+import {ImageViewerModule} from "ngx-image-viewer";
+import {MatSliderModule} from "@angular/material/slider";
+import {MatCheckboxModule} from "@angular/material/checkbox";
 @NgModule({
   declarations: [
     AppComponent,
@@ -99,7 +102,10 @@ import { AvatarsDialogComponent } from './components/register/avatars-dialog/ava
     MatSelectModule,
     MatProgressBarModule,
     MatTooltipModule,
-    MaterialFileInputModule
+    MaterialFileInputModule,
+    ImageViewerModule,
+    MatSliderModule,
+    MatCheckboxModule
 
   ],
   exports: [RouterModule],

@@ -1,5 +1,7 @@
-import {Component, OnInit} from '@angular/core';
-import {MatDialogRef} from "@angular/material/dialog";
+import {Component, Inject, OnInit} from '@angular/core';
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
+import {NotificationDialogComponent} from "../../notification-dialog/notification-dialog.component";
+import {Post} from "../../../data-type/Post";
 
 @Component({
   selector: 'app-avatars-dialog',
@@ -9,13 +11,14 @@ import {MatDialogRef} from "@angular/material/dialog";
 export class AvatarsDialogComponent implements OnInit{
   avatars : string[] = []
   selectedAvatar : number = -1;
-  constructor(  public dialogRef: MatDialogRef<AvatarsDialogComponent>) {
-  this.avatars  = ["/assets/fairy_PNG96.png", "/assets/little_mushroom.png", "/assets/little_mushroom_profile_img.png"]
+  constructor(  public dialogRef: MatDialogRef<AvatarsDialogComponent>,
+                public dialog : MatDialog, @Inject(MAT_DIALOG_DATA) public data: string[] )
+  {
+      this.avatars = data
   }
 
   ngOnInit(): void {
-    this.avatars  = ["/assets/fairy_PNG96.png", "/assets/smiley_mushroom.png", "/assets/little_mushroom_profile_img.png",
-      "/assets/smiley_mushroom.png"]
+
 
   }
 
@@ -25,6 +28,13 @@ export class AvatarsDialogComponent implements OnInit{
   }
 
   confirmSelection() {
-    this.dialogRef.close(this.selectedAvatar)
+    console.log(this.selectedAvatar)
+    if (this.selectedAvatar == -1){
+      this.dialog.open(NotificationDialogComponent,
+        {data: {notificationMessage:"Please choose an avatar to continue!", notificationTitle:"No Avatar chosen"}})
+
+    }
+    else{this.dialogRef.close(this.selectedAvatar)}
+
   }
 }

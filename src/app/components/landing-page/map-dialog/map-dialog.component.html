@@ -1,34 +1,62 @@
-<div class="dialog-header"> <button mat-icon-button mat-dialog-close="" class="createPostExitBtn"><mat-icon>close</mat-icon> </button></div><div class="map-dialog-container">
-  <form class="kmRadius-form" [formGroup]="kmFormGroup" (ngSubmit)="getClosestMarkers()">
-    <mat-form-field class="km-radius-width" >
-      <mat-label>Radius size in km</mat-label>
-      <input type="text" matInput [formControl]="kmInput" [errorStateMatcher]="matcher" formControlName="kmInput"
-             placeholder="Ex. 126.7">
-      <mat-hint>Insert a number for the radius</mat-hint>
-      <mat-error *ngIf="kmInput.hasError('pattern') && !kmInput.hasError('required')">
-        Please enter a valid km number
-      </mat-error>
-      <mat-icon matSuffix *ngIf="this.kmInput.value != '' && this.kmInput.value !=null" (click)="this.kmInput.reset()">close</mat-icon>
-    </mat-form-field>
+<div class="map-dialog-container">
+  <div class="dialog-header">
+    <h1>Map utilities</h1>
+  <button mat-icon-button mat-dialog-close="" class="createPostExitBtn">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+  <div class="map-dialog-content">
+    <div class="mapInputs">
+      <form class="kmRadius-form" [formGroup]="kmFormGroup" (ngSubmit)="getClosestMarkers()">
+        <mat-form-field class="km-radius-width" >
+          <mat-label>Radius size in km</mat-label>
+          <input type="text" matInput [formControl]="kmInput" [errorStateMatcher]="matcher" formControlName="kmInput"
+                 placeholder="Ex. 126.7">
+          <button *ngIf="this.kmInput.value" matSuffix mat-icon-button aria-label="Clear" (click)="this.kmInput.reset()">
 
-    <button mat-button type="submit" [disabled]="this.kmInput.invalid || this.kmInput.value == undefined">check nearest</button>
-  </form>
+          </button>
+          <mat-hint>Insert a number for the radius</mat-hint>
+          <mat-error *ngIf="kmInput.hasError('pattern') && !kmInput.hasError('required')">
+            Please enter a valid km number
+          </mat-error>
+          <mat-icon matSuffix *ngIf="this.kmInput.value != '' && this.kmInput.value !=null" (click)="clearCircle()">close</mat-icon>
+        </mat-form-field>
 
-  <form class="genus-form">
-    <mat-form-field appearance="legacy">
-      <mat-label>Search after Genus</mat-label>
-      <input type="text" matInput [formControl]="myControl" [matAutocomplete]="auto" (change)="resetMapValues($event)"  >
-      <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" (optionSelected)='showPostsOnMap($event.option.value)'  >
-        <mat-option *ngFor="let post of this.filteredGenuses! | async" [value]="post">
-          {{post.mushroomType[0] + post.mushroomType.substring(1).toLowerCase()}}
-        </mat-option>
-      </mat-autocomplete>
-    </mat-form-field>
-  </form>
+        <button mat-button type="submit" style="margin-top: 10px;" [disabled]="this.kmInput.invalid || this.kmInput.value == undefined">check nearest</button>
+      </form>
 
-  <div class="map-wrapper" #mapwrapper>
-    <app-map [markers]="this.markers!" [options]="this.options!" [height]="500" [width]="500" [posts]="this.posts!"
-             (newItemEvent)="setCurrentLocation($event)"
-             [createCircleSubject]="this.createCircleSubject!"> </app-map>
+      <form class="genus-form">
+        <mat-form-field appearance="legacy">
+          <mat-label>Search after Genus</mat-label>
+          <input type="text" matInput  [formControl]="myControl" [matAutocomplete]="auto" (change)="resetMapValues($event)"  >
+          <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" (optionSelected)='showPostsOnMap($event.option.value)'  >
+            <mat-option *ngFor="let post of this.filteredGenuses! | async" [value]="post">
+              {{post.mushroomType[0] + post.mushroomType.substring(1).toLowerCase()}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </form>
+      <div *ngIf="this.fromProfile" class="filterByDate">
+        <div class="matSliderWrapper">
+          <mat-checkbox #matCheckbox (change)="changeOnCheck($event)">
+            Filter posts by date of their sharing
+          </mat-checkbox>
+          <div class="matSlider" *ngIf="matCheckbox.checked">
+          <mat-card-subtitle  style="margin-top: 10px; margin-bottom: 0"> slide through the dates</mat-card-subtitle>
+          <mat-slider #matSlider class="customSlider" style="margin-top: 30px" [value]="0" [min]="0" [max]="this.dates.length-1"
+                      [disabled]="this.sliderDisabled"
+                      (input)="refreshMarkers($event)"
+          >
+        </mat-slider>
+        <span>Date: {{getSliderLabel(matSlider.value)}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="map-wrapper" #mapwrapper>
+      <app-map [markers]="this.new_markers!" [options]="this.options!" [height]="500" [width]="500" [posts]="this.new_posts!"
+               (newItemEvent)="setCurrentLocation($event)"
+               [createCircleSubject]="this.createCircleSubject!"> </app-map>
+    </div>
   </div>
 </div>

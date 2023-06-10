@@ -1,4 +1,17 @@
+::ng-deep.mat-dialog-container {
+  padding: 0;
+  overflow: hidden;
+  height: 100%;
+  margin: 0;
+  width:100%;
+  border-radius: 30px;
+  background-color: rgba(143, 180, 143, 0.95);
+}
 
+.createPostWrapper {
+
+  width: 100%;
+}
 .first-form{
   padding-top:0 ;
   margin-top: 0;
@@ -7,6 +20,7 @@
   flex-direction: column;
   grid-column-start: 1;
   grid-row-start: 1;
+
 
 }
 .createPostMapWrapper {
@@ -18,9 +32,11 @@
 
 .addButton {
   width: 200px;
-  margin-bottom: 6px;
+
 }
-.createPostWrapper {
+.createPostContentWrapper {
+  margin : 10px 10px 10px 10px;
+  padding: 10px 10px 10px 10px;
   display: grid;
   grid-template-columns:1fr 1fr;
 
@@ -35,5 +51,6 @@
 
 .createPostHeading {
   display: flex;
+  padding :10px 10px 10px 10px;
   justify-content: space-between;
 }

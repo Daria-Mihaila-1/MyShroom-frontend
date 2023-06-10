@@ -9,12 +9,13 @@
 
 .profilePageToolbar {
 width: 100%;
-background-color: aqua;
+background-color:rgb(143,188,143);
 }
 
 .profilePageContainer {
   height: 100%;
   width: 100%;
+  background-color: #331a00;
 }
 
 .contentContainer {
@@ -25,6 +26,7 @@ background-color: aqua;
 }
 .myPostsGridListTile {
 padding: 0;
+
 }
 
 .myPostsGridListTileWrapper {
@@ -41,10 +43,12 @@ padding: 0;
   height: 100%;
 }
 .myPostsListItem {
-height: 100%;
-  width: 100%;
-  margin-bottom: 10px;
+  height: 98%;
+  margin: 10px 10px 10px 10px;
+  flex-basis: 45%;
+
 }
+
 .myPostsListWrapper {
   flex-grow: 1;
   overflow-y: auto;
@@ -64,20 +68,18 @@ height: 100%;
 .myPostsListItemRow {
   display: flex;
   flex-flow: row wrap;
+  align-items: flex-start;
   padding: 0;
 
   width: 100%;
   align-content: space-around;
 }
 
-.myPostsListItem {
-  flex-basis: 50%;
 
-}
 .profileWrapper {
   height: 100%;
   width: 100%;
-  background-color: #4e072b;
+
   display: flex;
   flex-direction: column;
 }
@@ -101,17 +103,19 @@ height: 100%;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: #0F080F;
+  background-color:#331a00;
   height: fit-content;
   width: 100%;
-  box-shadow: 1px 0 30px #7b3cc3;
+  box-shadow: 1px 3px 30px #7b3cc3;
 }
 .profile-card-content {
   width: 100%;
 }
-
+.deleteAccountBtn {
+  color: white;
+}
 .name {
-  color: blue;
+  color: white;
   text-align: center;
 }
 .userRank {
@@ -130,15 +134,13 @@ height: 100%;
   align-self: flex-start;
 }
 .informationContainter {
-  background-color:#0F080F;
+  background-color:#331a00;
   flex-grow: 1;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
 }
 .informationContainter.registerDate {
   align-self: flex-end;
   color: #cccccc;
-}
-mat-list-item {
-  height: 5220px;
 }

@@ -6,6 +6,7 @@ import {AuthService} from "../../services/auth.service";
 import {SharedService} from "../../services/shared.service";
 import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 import {AvatarsDialogComponent} from "./avatars-dialog/avatars-dialog.component";
+import {NotificationDialogComponent} from "../notification-dialog/notification-dialog.component";
 
 @Component({
   selector: 'app-register',
@@ -20,23 +21,28 @@ export class RegisterComponent implements OnInit {
   userCredentialsFormGroup! : FormGroup;
   selectedAvatar : number = -1;
 
-  avatars : string[] = ["assets/fairy_PNG96.png", "assets/little_mushroom.png", "assets/little_mushroom_profile_img.png"]
-
+  avatars : string[]
+  showDeleteOption: boolean = false;
   constructor(private formBuilder : FormBuilder,
               private router:Router,
               private authService:AuthService,
               private sharedService : SharedService,
               public dialog : MatDialog) {
 
+    let main_dir = "/assets/avatars/"
+    this.avatars  = [main_dir + "fairy_.png",
+      main_dir + "mushroom_.png",  main_dir + "forager_.png", main_dir + "towering_mushroom_.png"]
+
+
   }
 
   ngOnInit(): void {
     this.userCredentialsFormGroup = this.formBuilder.group({
-      firstName: ["",[Validators.required, Validators.pattern("[A-Z][a-z]*")]],
-      lastName: ["",[Validators.required, Validators.pattern("[A-Z][a-z]*")]],
+      firstName: ["",[Validators.required]],
+      lastName: ["",[Validators.required]],
       userName: ["",[Validators.required]],
       password: ["",[Validators.required, Validators.pattern(".{8,}")]],
-      avatar:["", Validators.required]
+
     })
 
     this.sharedService.currentMessage.subscribe(msg => this.msg = msg);
@@ -44,26 +50,36 @@ export class RegisterComponent implements OnInit {
   }
 
   registerUser() {
-    const valuesFromForm = this.userCredentialsFormGroup.value;
-    const userCredentials : RegisterUserCredentials = {
-      firstName : valuesFromForm.firstName,
-      lastName : valuesFromForm.lastName,
-      userName : valuesFromForm.userName,
-      password : valuesFromForm.password,
-      profileImageIndex:this.selectedAvatar
-    }
-
-    this.authService.registerUser(userCredentials).subscribe( {
-       next : response =>{
-         this.router.navigate(['login'])
-         this.setMessage(userCredentials.userName)
-      },
-      error: err =>  {
-         console.log(err)
+    console.log(this.selectedAvatar)
+    if (this.selectedAvatar == -1) {
+      this.dialog.open(NotificationDialogComponent, {
+        data: {
+          notificationMessage: "You must choose an avatar in order to register!",
+          notificationTitle: "Registration failed"
+        }
+      })
+    } else {
+      console.log(this.selectedAvatar)
+      const valuesFromForm = this.userCredentialsFormGroup.value;
+      const userCredentials: RegisterUserCredentials = {
+        firstName: valuesFromForm.firstName,
+        lastName: valuesFromForm.lastName,
+        userName: valuesFromForm.userName,
+        password: valuesFromForm.password,
+        profileImageIndex: this.selectedAvatar
       }
-    })
-  }
 
+      this.authService.registerUser(userCredentials).subscribe({
+        next: response => {
+          this.router.navigate(['login'])
+          this.setMessage(userCredentials.userName)
+        },
+        error: err => {
+          console.log(err)
+        }
+      })
+    }
+  }
   setMessage(messageString : string) {
     this.sharedService.editMessage(messageString)
   }
@@ -71,18 +87,23 @@ export class RegisterComponent implements OnInit {
   openAvatarsDialog() {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.height = "600px";
-    // dialogConfig.maxHeight = "600px";
+     dialogConfig.maxWidth = "600px";
+     dialogConfig.panelClass = "avatarsDialog"
+    dialogConfig.data = this.avatars
 
 
     const dialogRef = this.dialog.open(AvatarsDialogComponent, dialogConfig)
     dialogRef.afterClosed().subscribe((selectedAvatar: number) => {
-      if (selectedAvatar) {
+      if (selectedAvatar != -1) {
         this.selectedAvatar = selectedAvatar;
         console.log(selectedAvatar)
-        console.log(selectedAvatar)
-        this.userCredentialsFormGroup.get('avatar')!.setValue(this.avatars![selectedAvatar].split("/")[1].split(".")[0]);
+
       }
     });
 
+  }
+
+  goToLogin() {
+    this.router.navigate(['../login']);
   }
 }

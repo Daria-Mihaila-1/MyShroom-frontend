@@ -1,4 +1,4 @@
-import {Component, Inject, OnInit} from '@angular/core';
+import {Component, Inject, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {Post} from "../../../data-type/Post";
 import {Marker} from "../../../data-type/Marker";
@@ -6,6 +6,8 @@ import {FormBuilder, FormControl, FormGroupDirective, NgForm, Validators} from "
 import {map, Observable, of, startWith, Subject} from "rxjs";
 import {ErrorStateMatcher} from "@angular/material/core";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {MatSliderChange} from "@angular/material/slider";
+import {MatCheckboxChange} from "@angular/material/checkbox";
 
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
@@ -52,15 +54,35 @@ export class MapDialogComponent implements OnInit{
   )
 
   //Subject to send to map if a km input is entered
-  createCircleSubject:Subject<[Marker[], number]> = new Subject();
+  createCircleSubject: {markers:Marker[], distance : number}
+  fromProfile: boolean;
+  dates : string[];
+
+  new_posts : Post[] = []
+  new_markers: Marker[] =[];
+  sliderDisabled: boolean = true;
 
   constructor(
-  @Inject(MAT_DIALOG_DATA) public data: {markers:Marker[], posts:Post[]},
+  @Inject(MAT_DIALOG_DATA) public data: {markers:Marker[], posts:Post[], fromProfile:boolean},
   private formBuilder: FormBuilder,
 
   private snackBar : MatSnackBar) {
     this.markers = this.data.markers;
+    this.fromProfile = this.data.fromProfile;
     this.posts = this.data.posts;
+    this.new_posts = this.posts!;
+    this.new_markers = this.markers!;
+    this.dates = this.posts!
+      .reduce((distinctPosts: Post[], post: Post) => {
+      if (!distinctPosts.some((distinctPost) => distinctPost.date === post.date)) {
+        distinctPosts.push(post);
+      }
+      return distinctPosts;
+    }, [])
+      .map(value =>value.date)
+      .reverse();
+
+
   }
 
   ngOnInit(): void {
@@ -73,7 +95,7 @@ export class MapDialogComponent implements OnInit{
       }
       return distinctPosts;
     }, []);
-    // console.log(this.distinctPosts)
+
     this.initializeFilteredList();
   }
 
@@ -83,10 +105,12 @@ export class MapDialogComponent implements OnInit{
   }
 
   private _filter(genus: string): Post[] {
+    console.log("_filter")
+
     const filterValue = genus.toLowerCase();
     // @ts-ignore
     return this.distinctPosts.filter(option => {
-      const localgenus = option.mushroomType
+      const localgenus = option.mushroomType.toLowerCase()
 
       if(localgenus.startsWith(filterValue)){
 
@@ -96,6 +120,7 @@ export class MapDialogComponent implements OnInit{
   }
 
   initializeFilteredList(){
+    console.log("initializeFilteredList")
     this.myControl.reset();
     this.filteredGenuses = this.myControl.valueChanges.pipe(
       startWith(''),
@@ -109,21 +134,50 @@ export class MapDialogComponent implements OnInit{
 
 
   showPostsOnMap(value: Post) {
+    console.log("showPostsOnMap")
     if (!value) {
       console.log("input field is empty")
     }
-    let new_posts = this.posts!.filter(post => post.mushroomType ===value.mushroomType)
+    this.new_posts = this.posts!.filter(post => post.mushroomType === value.mushroomType)
 
-    this.markers = new_posts.map((el => ({ lat: el.latitude, lng: el.longitude, type:el.type})));
+    console.log(this.new_posts)
+    this.new_markers = this.new_posts.map((el => ({lat: el.latitude, lng: el.longitude, type: el.type})));
+
+    for (let i = 0; i < this.new_posts.length; i++) {
+      if (this.new_posts[i].type.toUpperCase() == "INFO") {
+        this.new_markers[i].type = "assets/green_pin.png"
+        this.new_posts[i].type = "Info"
+      } else if (this.new_posts[i].type.toUpperCase().indexOf("BEAR") != -1) {
+        this.new_markers[i].type = "/assets/red_pin_cuter.png"
+        this.new_posts[i].type = "Bear Alert"
+
+      } else if (this.new_posts[i].type.toUpperCase() == "POISONOUS") {
+        this.new_markers[i].type = "/assets/rsz_1purple_pin.png"
+        this.new_posts[i].type = "Poisonous"
+      }
+    }
   }
 
 
 
-
-
-
   resetMapValues(event: any) {
+    console.log("resetMapValues")
+    this.new_posts = this.posts!
     this.markers = this.posts!.map(el => ({ lat: el.latitude, lng: el.longitude, type:el.type}));
+
+    for (let i = 0; i < this.new_posts.length; i++) {
+      if (this.new_posts[i].type.toUpperCase() == "INFO") {
+        this.new_markers[i].type = "assets/green_pin.png"
+        this.new_posts[i].type = "Info"
+      } else if (this.new_posts[i].type.toUpperCase().indexOf("BEAR") != -1) {
+        this.new_markers[i].type = "/assets/red_pin_cuter.png"
+        this.new_posts[i].type = "Bear Alert"
+
+      } else if (this.new_posts[i].type.toUpperCase() == "POISONOUS") {
+        this.new_markers[i].type = "/assets/rsz_1purple_pin.png"
+        this.new_posts[i].type = "Poisonous"
+      }
+    }
     console.log("resetez acuma valorile la cele initiale primite de la componenta principala")
   }
 
@@ -134,7 +188,6 @@ export class MapDialogComponent implements OnInit{
   // Create a circle with the kmInput radius and highlight the closest markers
   getClosestMarkers() {
     let km = parseFloat(this.kmInput.value!)
-
     // Create list of the closest markers to send them to the map component
     let closestMarkers = this.markers?.filter(marker => this.getDistance(marker.lat, marker.lng) <= km);
     this.markers?.forEach( marker =>
@@ -143,9 +196,8 @@ export class MapDialogComponent implements OnInit{
     })
     // Send the closest markers to the map component
     if (km < 370) {
-      this.createCircleSubject.next([closestMarkers!, km * 1000]);
-      this.kmInput.reset();
-
+      // this.createCircleSubject.next([closestMarkers!, km * 1000]);
+      this.createCircleSubject = {markers:closestMarkers!, distance:km * 1000}
     }
     else {
         this.snackBar.open("radius is too big for Romania","Ok")
@@ -179,6 +231,46 @@ export class MapDialogComponent implements OnInit{
 
 
   clearCircle() {
+    this.kmInput.reset()
+    this.createCircleSubject = {markers:[], distance:0};
+  }
 
+  refreshMarkers($event: MatSliderChange) {
+    console.log($event!.value)
+    let dateIndex = $event!.value;
+    let intermediaryPosts = this.posts?.filter(value => value.date === this.dates[dateIndex!])
+    console.log(intermediaryPosts!.length)
+    if (intermediaryPosts!.length > 0) {
+      console.log(intermediaryPosts![0])
+      this.new_markers = this.markers!.filter(value =>
+      {
+        let coordinates = {lat: value.lat,lng :value.lng}
+        if (intermediaryPosts!.find((value:Post) => value.latitude === coordinates.lat && value.longitude === coordinates.lng)){
+          return value;
+        }
+        console.log(value)
+        return;
+      }
+      )
+      this.new_posts = intermediaryPosts!;
+      console.log(intermediaryPosts![0])
+      console.log(this.markers)
+    }
+
+    else {this.new_markers = []}
+  }
+
+
+  changeOnCheck($event: MatCheckboxChange) {
+    this.sliderDisabled = !$event.checked;
+    if (!$event.checked) {
+      this.new_markers = this.markers!;
+      this.new_posts = this.posts!;
+    }
+  }
+
+  getSliderLabel(value: number): string {
+    console.log(value)
+    return this.dates[value];
   }
 }

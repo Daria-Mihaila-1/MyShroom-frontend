@@ -12,6 +12,7 @@
   border-radius: 5px;
 
 }
+
 .cover-img {
   height: 100%;
   width: 100%;
@@ -28,9 +29,9 @@ margin-top: 0;
   height:100vh;
 }
 app-post {
-  width: 65%;
-  height: 98%;
-  padding:10px;
+  width: 45%;
+  height:80%;
+  padding-bottom:10px;
 }
 app-map{
   margin-top: 0;
@@ -38,18 +39,29 @@ app-map{
   height: 100%;
 }
 .post_tile {
-  padding:0;
-  background-color:  #2d1756;
   display: flex;
-  align-items: stretch;
+  justify-content: center;
+  padding:0;
+  background-color: transparent;
+  align-items: center;
 }
 .post_tile.div.mat-grid-tile-content{
   width: 100%;
+  padding-top: 10px;
 }
 button{
-  background-color: midnightblue;
-  color:white;
+  background-color:  rgb(143,188,143);
+  color:black;
+}
 
+
+.coverImg {
+  height: 130px;
+  background-image: url("src/assets/cover_img_full.jpg");
+  background-position: 0 50%;
+  background-repeat: no-repeat;
+  overflow-x: hidden;
+  background-size: cover;
 }
 
 mat-chip {
@@ -57,7 +69,7 @@ mat-chip {
 
 }
 .items_list {
-  background-color: #150b28;
+  background-color:#331a00;
 }
 
 
@@ -72,7 +84,7 @@ mat-sidenav {
   align-self: flex-end;
 }
 .landingPageToolbar {
-  background-color:  #2d1756;
+  background-color:transparent;
 }
 .myMapGridTile {
   margin-top:0;

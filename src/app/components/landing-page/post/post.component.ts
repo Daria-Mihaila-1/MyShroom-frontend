@@ -17,6 +17,7 @@ import {User} from "../../../data-type/User";
 })
 export class PostComponent implements OnInit {
   @Input() post:Post|undefined;
+  @Input() isInDialog: boolean | undefined;
   @Output() deletePostEvent = new EventEmitter<number>();
   @Output() updatePostEvent = new EventEmitter<void>();
   @Output() reportPostEvent = new EventEmitter<Post[]>();
@@ -39,8 +40,6 @@ export class PostComponent implements OnInit {
   ngOnInit(): void {
     if (this.post){
       // this.post will be still undefined in constructor
-      this.modifiedMushroomType = this.post.mushroomType[0] + this.post.mushroomType.substring(1).toLowerCase();
-
       this.userService.getUserById(this.post!.userId).subscribe( result => {
         this.myUser = result;
       })
@@ -71,6 +70,7 @@ export class PostComponent implements OnInit {
     dialogRef.afterClosed().subscribe( result =>
     {
       this.updatePostEvent.emit()
+      window.location.reload();
     })
   }
 

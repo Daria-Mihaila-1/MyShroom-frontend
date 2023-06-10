@@ -1,11 +1,73 @@
+
+
 .form-wrapper {
   display: flex;
-  justify-content: center;
+  align-self: center;
   align-items: center;
   flex-direction: column;
+  margin-bottom: 20px;
+  width: 400px;
+  max-width: 400px;
+  background: rgba(143,188,143, 0.6);
+  border-radius: 25px;
+}
+.form_inputs {
+  display: flex;
+
+  align-items: center;
+  flex-direction: column;
+
+}
+.loginTitle {
+  margin-top: 20px;
+  text-align: center;
+  margin-bottom: 20px;
 }
 
-div.form-wrapper.mat-form-field {
-  width: 75%;
-  margin-top: 25px;
+.loginPageWrapper {
+
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  background-image: url("src/assets/mush_cover.jpeg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  overflow: hidden;
+  flex-direction: column;
+  display: flex;
+  justify-content: center;
+
+}
+
+.loginBtn {
+  font-weight : bold ;
+  font-size: 15px;
+  padding: 12px;
+  width: 120px;
+  border-radius: 20px;
+  color: white;
+  border: 3px solid rgb(143,188,143);
+  cursor: pointer;
+  background: transparent;
+  background-image: url('src/assets/mushrooms_btn.png');
+  background-repeat: repeat-x;
+  background-position: 0 -102%;
+  transition: 1s ease;
+  align-self: center;
+  filter: hue-rotate(0deg);
+
+  margin-bottom: 10px;
+  margin-top: 15px;
+}
+.loginBtn:hover{
+  background-position: center;
+}
+.goToRegister{
+display: flex;
+  align-self: center;
+
+  align-items: center;
+  flex-direction: column;
+
 }

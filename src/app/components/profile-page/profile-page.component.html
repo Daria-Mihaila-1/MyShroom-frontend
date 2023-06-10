@@ -7,14 +7,13 @@
         Home
       </mat-list-item>
       <mat-list-item (click)="openPredictWindow()">
-        <mat-icon></mat-icon>
+        <img class="icon" src="assets/mushroom_predictor_mushroom_icon(2).svg"/>
         Check my mushroom
       </mat-list-item>
       <mat-list-item (click)="openCreatePost()">Share your own Findings</mat-list-item>
+      <mat-list-item (click)="openMapDialog()"><mat-icon>map</mat-icon>See posts on map</mat-list-item>
       <mat-list-item (click)="signOut()">
-        <mat-icon>exit_to_app</mat-icon>
-        Sign out
-      </mat-list-item>
+        <mat-icon>exit_to_app</mat-icon>Sign out</mat-list-item>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content class="profilePageContent">
@@ -36,7 +35,7 @@
                 <div class="profile-card-extra-info">
                   <h3 class="userRank" *ngIf="modifiedUserRank === 'Expert'"><mat-icon>star</mat-icon>Rank: {{this.modifiedUserRank!}}</h3>
                   <h3 class="userRank" *ngIf="modifiedUserRank != 'Expert'">Rank: {{this.modifiedUserRank!}}</h3>
-                  <h3 class="strikesCount"> Reported posts count: {{this.myUser?.strikes}}</h3>
+
                 </div>
               </mat-card-content>
             </mat-card>
@@ -45,34 +44,48 @@
                 <mat-list-item >
                   <div class="rankListItem">
                     <span style="color:#cccccc">During your stay you have shared {{this.myPosts?.length}} posts </span>
-                    <mat-progress-bar mode="determinate" style="padding-top: 15px" [value]=this.sharedPostsPercentage matTooltip="You have {{this.postsNumberUpperBound - this.postsNumberUpperBound * this.sharedPostsPercentage/100}} posts to go until your rank increases" title="shared Posts"></mat-progress-bar>
+                    <mat-progress-bar mode="determinate"
+                                      style="padding-top: 15px"
+                                      [value]=this.sharedPostsPercentage
+                                      matTooltip="You have {{this.postsNumberUpperBound - this.postsNumberUpperBound * this.sharedPostsPercentage/100}} posts to go until your rank increases"
+                                      title="shared Posts"></mat-progress-bar>
                   </div>
                 </mat-list-item>
                 <mat-list-item style="color:#cccccc">
-                  Reported posts number: {{this.myReportedPosts?.length}}
+                  <div class="strikesCountListItem">
+                    Number of my posts that got reported: {{this.myUser!.strikes}}
+                    <mat-progress-bar mode="determinate"
+                                      style="padding-top: 15px"
+                                      [value]="this.myUser!.strikes * 100 / 4"
+                                      matTooltip="You have {{4 - this.myUser!.strikes}} strikes left until your account gets blocked by the app"
+                                      title="shared Posts"></mat-progress-bar>
+                  </div>
                 </mat-list-item>
               <mat-list-item style="color:#cccccc">
                 <h3 class="registerDate">A member since {{myUser?.registerDate}}</h3>
               </mat-list-item>
               </mat-list>
+              <button mat-button class="deleteAccountBtn" (click)="deleteAccount()">Delete account</button>
             </div>
           </div>
 
         </mat-grid-tile>
-        <mat-grid-tile class="myPostsGridListTile" colspan="2">
+        <mat-grid-tile class="myPostsGridListTile" colspan="2" >
           <div *ngIf="this.myPosts && this.myPosts.length > 0" class="myPostsGridListTileWrapper">
             <div class="myPostsListWrapper">
             <div  class="myPostsHeader">
-              <h1>See your contributions to the Site!</h1>
+              <h1 style="color: white">See your contributions to the Site!</h1>
             </div>
-
               <mat-list #matList class="myPostsList" *ngIf="this.myPosts && this.myPosts.length > 0" role="list">
                 <div class="myPostsListItemRow">
                   <ng-container *ngFor="let post of this.myPosts!">
-                    <app-post role="listitem" class="myPostsListItem" [post]="post"></app-post>
+                    <app-post               (deletePostEvent)="deletePost($event)"
+
+                                            role="listitem" class="myPostsListItem" [post]="post" [isInDialog]="false"></app-post>
                   </ng-container>
                 </div>
               </mat-list>
+
             </div>
           </div>
           <div *ngIf="this.myPosts && this.myPosts!.length == 0">
