@@ -8,10 +8,17 @@
 /*  justify-content: center;*/
 /*}*/
 
-/*.yes-btn{*/
-/*  background-color: #c5c5c5;*/
-/*}*/
+.yes-btn{
+  background-color: #6b956a
+;
+}
 
-/*.no-btn{*/
-/*  background-color: #c5c5c5;*/
-/*}*/
+.no-btn{
+  background-color: #6b956a
+;
+
+}
+.confirmationDialog {
+  margin:20px;
+}
+

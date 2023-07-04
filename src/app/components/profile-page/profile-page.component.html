@@ -10,7 +10,7 @@
         <img class="icon" src="assets/mushroom_predictor_mushroom_icon(2).svg"/>
         Check my mushroom
       </mat-list-item>
-      <mat-list-item (click)="openCreatePost()">Share your own Findings</mat-list-item>
+      <mat-list-item (click)="openCreatePost()"><img class="icon" src="assets/add-icon.png" > Share your Findings</mat-list-item>
       <mat-list-item (click)="openMapDialog()"><mat-icon>map</mat-icon>See posts on map</mat-list-item>
       <mat-list-item (click)="signOut()">
         <mat-icon>exit_to_app</mat-icon>Sign out</mat-list-item>
@@ -47,7 +47,7 @@
                     <mat-progress-bar mode="determinate"
                                       style="padding-top: 15px"
                                       [value]=this.sharedPostsPercentage
-                                      matTooltip="You have {{this.postsNumberUpperBound - this.postsNumberUpperBound * this.sharedPostsPercentage/100}} posts to go until your rank increases"
+                                      matTooltip="You have {{this.postsNumberUpperBound - this.myPosts!.length}} posts to go until your rank increases"
                                       title="shared Posts"></mat-progress-bar>
                   </div>
                 </mat-list-item>

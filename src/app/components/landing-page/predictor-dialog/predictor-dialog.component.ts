@@ -1,6 +1,6 @@
 import {AfterViewInit, Component, Inject, OnInit, Pipe, PipeTransform, ViewChild} from '@angular/core';
 
-import { MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {ImageUploadService} from "../../../services/image-upload.service";
 import {PredictionResponse} from "../../../data-type/PredictionResponse";
 import {PredictionRequest} from "../../../data-type/PredictionRequest";
@@ -10,6 +10,7 @@ import {MatSidenavContent} from "@angular/material/sidenav";
 import {MushroomImgService} from "../../../services/mushroom-img.service";
 import {map} from "rxjs";
 import {MushroomImg} from "../../../data-type/MushroomImg";
+import {NotificationDialogComponent} from "../../notification-dialog/notification-dialog.component";
 
 
 @Component({
@@ -30,19 +31,28 @@ export class PredictorDialogComponent implements OnInit, AfterViewInit {
   @ViewChild('sidenav') si: MatSidenavContent | undefined;
 
   constructor(public dialogRef: MatDialogRef<PredictorDialogComponent>,
+              public dialog : MatDialog,
               private imageUploadService: ImageUploadService,
               private mushroomImgService : MushroomImgService) {
 
   }
 
   ngOnInit(): void {
-    console.log(this.prediction)
+
+    let notificationMessage = "This classification system achieves an accuracy of 82%\n Although this percentage seems pretty reliable\n" +
+      "!!! We advise you to NOT only rely on our classifier !!!\nwhen deciding whether to ingest or touch a discovered mushroom." +
+      "\nBUT we CANNOT ASSURE a 100% correct classification result!\nPLEASE consult other credible sources too, the classifier is for now merely a pointer in the right direction.";
+    let notificationTitle = "Classificator Information Note";
+    setTimeout(()=> this.dialog.open(NotificationDialogComponent,{data:{
+        notificationMessage,
+        notificationTitle
+      }}),
+      150)
   }
 
   selectFile(event: any): void {
 this.predicted = false;
     this.preview = '';
-    console.log("la inceput de selectFile")
 
 
     this.currentImg = event.addedFiles[0];
@@ -90,7 +100,6 @@ this.predicted = false;
 
             this.mushroomImgService.getMushroomsByGenus(key).subscribe( result=>
             {
-              console.log(result)
 
                 result.forEach(value => {
                   let content_type = "data:image/jpg;base64"
@@ -103,7 +112,7 @@ this.predicted = false;
           )
         },
         err => {
-            console.log("Error")
+          this.dialog.open(NotificationDialogComponent, {data:{notificationMessage:"Something went wrong...Please try again later", notificationTitle:"Oops!"}})
         }
       )
 

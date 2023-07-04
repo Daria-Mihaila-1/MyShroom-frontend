@@ -15,7 +15,7 @@
           <button *ngIf="this.kmInput.value" matSuffix mat-icon-button aria-label="Clear" (click)="this.kmInput.reset()">
 
           </button>
-          <mat-hint>Insert a number for the radius</mat-hint>
+          <mat-hint>Enter the radius (in kilometers)to view posts on the map within that distance from your location</mat-hint>
           <mat-error *ngIf="kmInput.hasError('pattern') && !kmInput.hasError('required')">
             Please enter a valid km number
           </mat-error>
@@ -28,7 +28,7 @@
       <form class="genus-form">
         <mat-form-field appearance="legacy">
           <mat-label>Search after Genus</mat-label>
-          <input type="text" matInput  [formControl]="myControl" [matAutocomplete]="auto" (change)="resetMapValues($event)"  >
+          <input matInput  [formControl]="myControl" [matAutocomplete]="auto" (input)="resetMapValues($event)">
           <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" (optionSelected)='showPostsOnMap($event.option.value)'  >
             <mat-option *ngFor="let post of this.filteredGenuses! | async" [value]="post">
               {{post.mushroomType[0] + post.mushroomType.substring(1).toLowerCase()}}
@@ -38,9 +38,10 @@
       </form>
       <div *ngIf="this.fromProfile" class="filterByDate">
         <div class="matSliderWrapper">
-          <mat-checkbox #matCheckbox (change)="changeOnCheck($event)">
+          <mat-checkbox [matTooltip]="'Select this checkbox to filter your posts by posting date.'" matTooltipPosition="below" #matCheckbox (change)="changeOnCheck($event)">
             Filter posts by date of their sharing
           </mat-checkbox>
+
           <div class="matSlider" *ngIf="matCheckbox.checked">
           <mat-card-subtitle  style="margin-top: 10px; margin-bottom: 0"> slide through the dates</mat-card-subtitle>
           <mat-slider #matSlider class="customSlider" style="margin-top: 30px" [value]="0" [min]="0" [max]="this.dates.length-1"

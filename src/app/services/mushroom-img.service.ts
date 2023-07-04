@@ -14,6 +14,7 @@ export class MushroomImgService {
   constructor(private httpClient: HttpClient) {
     bodyURL = "http://localhost:8090/api/mushroom-img/"
     GET_IMAGES_BY_TYPE = bodyURL + "get-all-by-mushroomType/"
+    GET_IMAGES_BY_TYPE = bodyURL + "add-img/"
   }
 
   getMushroomsByGenus(mushroomType : string):Observable<MushroomImg[]> {

@@ -80,7 +80,6 @@ export class LoginComponent implements OnInit {
         error: err => {
 
           this.dialog.open(NotificationDialogComponent, {data: {notificationMessage:err.error, notificationTitle:"Login failed"}})
-          console.log(err)
     }
   });
 

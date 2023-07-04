@@ -27,10 +27,10 @@ export class ProfilePageComponent implements OnInit, AfterViewInit{
   myUser : User | undefined;
   modifiedUserRank : string | undefined;
   sharedPostsPercentage : number = 0;
-   postsNumberUpperBound : number = 0;
-   avatars : string[]= [];
-   myProfileImg : string = "";
-   strikesCountColor : string = ""
+  postsNumberUpperBound : number = 0;
+  avatars : string[]= [];
+  myProfileImg : string = "";
+  strikesCountColor : string = ""
   @ViewChild("matList") postsMatList : MatList | undefined;
 
   ngOnInit() {
@@ -66,55 +66,30 @@ export class ProfilePageComponent implements OnInit, AfterViewInit{
     this.avatars  = [main_dir + "fairy_.png",
       main_dir + "forager_.png",
       main_dir + "mushroom_.png",  main_dir + "mushrooms_.png", main_dir + "towering_mushroom_.png"]
-    if(this.myUser?.strikes == 1)
-      this.strikesCountColor = "#00cc00"
-    else if (this.myUser?.strikes == 2)
-      this.strikesCountColor = "#ff6600"
-    else if (this.myUser?.strikes == 3)
-      this.strikesCountColor = "#ff0000"
 
-      this.userService.getUserById(parseInt(localStorage.getItem('user')!)).subscribe( result => {
-          this.myUser = result;
+    this.loadUser();
+  }
 
-          this.myProfileImg = this.avatars[this.myUser?.profileImageIndex!]
-          console.log(this.myUser)
-          this.modifiedUserRank = this.myUser!.rank[0] + this.myUser!.rank.substring(1).toLowerCase();
-        },
-        error => {
-          this.router.navigate(['../login'])
-          console.log("token probably expired")
-          console.log(error)
-          localStorage.setItem("tokenStatus", "isExpired")
-        })
+  loadPosts() {
 
     this.postService.getMyPosts().subscribe(data => {
         this.myPosts = data.reverse();
         this.markers = this.myPosts.map((el => ({lat: el.latitude, lng: el.longitude, type: el.type})));
 
-      for (let i = 0; i < this.myPosts.length; i++) {
-        if (this.myPosts[i].type == "INFO") {
-          this.markers[i].type = "assets/green_pin.png"
-          this.myPosts[i].type = "Info"
-        } else if (this.myPosts[i].type == "BEAR_ALERT") {
-          this.markers[i].type = "/assets/red_pin_cuter.png"
-          this.myPosts[i].type = "Bear Alert"
+        for (let i = 0; i < this.myPosts.length; i++) {
+          if (this.myPosts[i].type == "INFO") {
+            this.markers[i].type = "assets/green_pin.png"
+            this.myPosts[i].type = "Info"
+          } else if (this.myPosts[i].type == "BEAR_ALERT") {
+            this.markers[i].type = "/assets/red_pin_cuter.png"
+            this.myPosts[i].type = "Bear Alert"
 
-        } else if (this.myPosts[i].type == "POISONOUS") {
-          this.markers[i].type = "/assets/rsz_1purple_pin.png"
-          this.myPosts[i].type = "Poisonous"
+          } else if (this.myPosts[i].type == "POISONOUS") {
+            this.markers[i].type = "/assets/rsz_1purple_pin.png"
+            this.myPosts[i].type = "Poisonous"
+          }
         }
-      }
-        if (this.myUser?.rank == 'BEGINNER'){
-          this.sharedPostsPercentage = 100*this.myPosts.length/5
-          this.postsNumberUpperBound = 5;
-        }
-        else if (this.myUser?.rank == 'INTERMEDIATE') {
-          this.sharedPostsPercentage = 100*this.myPosts.length/15
-          this.postsNumberUpperBound = 15;
-        }
-        else {
-          this.sharedPostsPercentage = 100
-        }
+
         for (let i = 0; i < this.myPosts.length; i++){
           let mushroomTypeRaw = this.myPosts[i].mushroomType
           this.myPosts[i].mushroomType =  mushroomTypeRaw.charAt(0) + mushroomTypeRaw.substring(1).toLowerCase();
@@ -127,9 +102,38 @@ export class ProfilePageComponent implements OnInit, AfterViewInit{
         localStorage.setItem("tokenStatus", "isExpired")
       })
 
-
   }
+  async loadUser() {
+    if (this.myPosts == undefined) {
+      await this.loadPosts();
+    }
+    this.userService.getUserById(parseInt(localStorage.getItem('user')!)).subscribe( result => {
+        this.myUser = result;
 
+        this.myProfileImg = this.avatars[this.myUser?.profileImageIndex!]
+        console.log(this.myUser)
+
+        this.modifiedUserRank = this.myUser!.rank[0] + this.myUser!.rank.substring(1).toLowerCase();
+        if (this.myUser?.rank == 'BEGINNER') {
+          console.log("Beginner");
+          this.sharedPostsPercentage = 100 * this.myPosts!.length / 5
+          this.postsNumberUpperBound = 5;
+        } else if (this.myUser?.rank == 'INTERMEDIATE') {
+          console.log("Intermediate");
+          this.sharedPostsPercentage = 100 * this.myPosts!.length / 15
+          this.postsNumberUpperBound = 15;
+        } else {
+          console.log(this.myUser!);
+          this.sharedPostsPercentage = 100
+        }
+      },
+      error => {
+        this.router.navigate(['../login'])
+        console.log("token probably expired")
+        console.log(error)
+        localStorage.setItem("tokenStatus", "isExpired")
+      })
+  }
   openCreatePost() {
 
 
@@ -139,7 +143,7 @@ export class ProfilePageComponent implements OnInit, AfterViewInit{
     {
       console.log(result)
       if (result) {
-       window.location.reload()
+        window.location.reload()
       }
     })
   }

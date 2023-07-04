@@ -1,0 +1,20 @@
+
+.ok-actions {
+  display: flex;
+  justify-content: right;
+}
+
+.ok-btn {
+  background-color:#6b956a;
+}
+
+.notificationDialogContent {
+  display: flex;
+  justify-content: center;
+
+}
+
+.notificationDialog
+{
+  margin:20px;
+}

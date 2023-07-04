@@ -1,8 +1,12 @@
-
-/*.app-post.dialog_post {*/
-/*  height: auto;*/
-/*  width: 100%;*/
-/*}*/
+::ng-deep.mat-dialog-container {
+  padding: 0;
+  overflow: hidden;
+  height: 100%;
+  margin: 0;
+  width:100%;
+  border-radius: 30px;
+  background-color: rgba(143, 180, 143, 0.95);
+}
 
 .post-dialog-wrapper {
   border-radius: 20px;

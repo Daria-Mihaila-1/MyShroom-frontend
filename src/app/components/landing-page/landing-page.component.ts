@@ -18,6 +18,7 @@ import {CookieService} from "ngx-cookie-service";
 import {MapDialogComponent} from "./map-dialog/map-dialog.component";
 import {Marker} from "../../data-type/Marker";
 import {CreatePostComponent} from "../create-post/create-post.component";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 const iconBase =
   "https://developers.google.com/maps/documentation/javascript/examples/full/images/";
@@ -63,6 +64,7 @@ export class LandingPageComponent implements OnInit, OnChanges, AfterViewInit {
               private authService : AuthService,
               private router : Router,
               private cookieService: CookieService,
+              private snackBar : MatSnackBar,
 
   ) {
 
@@ -179,7 +181,6 @@ export class LandingPageComponent implements OnInit, OnChanges, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.height = this.mapContainer?.nativeElement.offsetHeight;
-    console.log(this.height)
   }
 
   getPostIndex(post : Post) {
@@ -194,10 +195,17 @@ export class LandingPageComponent implements OnInit, OnChanges, AfterViewInit {
     })
   }
 
-  refreshList($event: Post[] | void) {
-    console.log($event)
+  refreshList($event: string | void) {
     window.location.reload();
+
   }
+  reportPost($event : string) {
+
+    this.refreshList()
+    console.log("reported Post")
+    this.snackBar.open("You have reported " + $event + "'s post successfully!", "Ok")
+  }
+
 
   goToProfilePage() {
 

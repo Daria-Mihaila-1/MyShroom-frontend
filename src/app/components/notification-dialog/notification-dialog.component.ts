@@ -8,7 +8,13 @@ import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 })
 export class NotificationDialogComponent {
 
-constructor(@Inject(MAT_DIALOG_DATA) public data :{notificationMessage: string, notificationTitle:string} ,
-            public dialogRef : MatDialogRef<NotificationDialogComponent>,) {
-}
+  splitData :string[] = [];
+
+  constructor(@Inject(MAT_DIALOG_DATA) public data :{notificationMessage: string, notificationTitle:string} ,
+              public dialogRef : MatDialogRef<NotificationDialogComponent>,) {
+    if (this.data.notificationMessage.indexOf("\n")) {
+      this.splitData = this.data.notificationMessage.split("\n");
+    }
+
+  }
 }

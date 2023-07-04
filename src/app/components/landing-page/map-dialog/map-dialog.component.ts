@@ -105,7 +105,6 @@ export class MapDialogComponent implements OnInit{
   }
 
   private _filter(genus: string): Post[] {
-    console.log("_filter")
 
     const filterValue = genus.toLowerCase();
     // @ts-ignore
@@ -120,7 +119,6 @@ export class MapDialogComponent implements OnInit{
   }
 
   initializeFilteredList(){
-    console.log("initializeFilteredList")
     this.myControl.reset();
     this.filteredGenuses = this.myControl.valueChanges.pipe(
       startWith(''),
@@ -134,13 +132,10 @@ export class MapDialogComponent implements OnInit{
 
 
   showPostsOnMap(value: Post) {
-    console.log("showPostsOnMap")
     if (!value) {
-      console.log("input field is empty")
     }
     this.new_posts = this.posts!.filter(post => post.mushroomType === value.mushroomType)
 
-    console.log(this.new_posts)
     this.new_markers = this.new_posts.map((el => ({lat: el.latitude, lng: el.longitude, type: el.type})));
 
     for (let i = 0; i < this.new_posts.length; i++) {
@@ -160,25 +155,28 @@ export class MapDialogComponent implements OnInit{
 
 
 
-  resetMapValues(event: any) {
-    console.log("resetMapValues")
-    this.new_posts = this.posts!
-    this.markers = this.posts!.map(el => ({ lat: el.latitude, lng: el.longitude, type:el.type}));
+  resetMapValues($event: any) {
+    if ($event.target.value.trim() === '') {
+      console.log(this.markers)
+      console.log()
+      this.new_posts = this.posts!
+      this.markers = this.posts!.map(el => ({lat: el.latitude, lng: el.longitude, type: el.type}));
 
-    for (let i = 0; i < this.new_posts.length; i++) {
-      if (this.new_posts[i].type.toUpperCase() == "INFO") {
-        this.new_markers[i].type = "assets/green_pin.png"
-        this.new_posts[i].type = "Info"
-      } else if (this.new_posts[i].type.toUpperCase().indexOf("BEAR") != -1) {
-        this.new_markers[i].type = "/assets/red_pin_cuter.png"
-        this.new_posts[i].type = "Bear Alert"
+      for (let i = 0; i < this.new_posts.length; i++) {
+        if (this.new_posts[i].type.toUpperCase() == "INFO") {
+          this.markers[i].type = "/assets/green_pin.png"
+          this.new_posts[i].type = "Info"
+        } else if (this.new_posts[i].type.toUpperCase().indexOf("BEAR") != -1) {
+          this.markers[i].type = "/assets/red_pin_cuter.png"
+          this.new_posts[i].type = "Bear Alert"
 
-      } else if (this.new_posts[i].type.toUpperCase() == "POISONOUS") {
-        this.new_markers[i].type = "/assets/rsz_1purple_pin.png"
-        this.new_posts[i].type = "Poisonous"
+        } else if (this.new_posts[i].type.toUpperCase() == "POISONOUS") {
+          this.markers[i].type = "/assets/rsz_1purple_pin.png"
+          this.new_posts[i].type = "Poisonous"
+        }
       }
+      this.new_markers = this.markers;
     }
-    console.log("resetez acuma valorile la cele initiale primite de la componenta principala")
   }
 
 
@@ -192,7 +190,7 @@ export class MapDialogComponent implements OnInit{
     let closestMarkers = this.markers?.filter(marker => this.getDistance(marker.lat, marker.lng) <= km);
     this.markers?.forEach( marker =>
     {
-      if (this.getDistance(marker.lat, marker.lng) > km) console.log(this.getDistance(marker.lat, marker.lng), marker.lat, marker.lng, this.currentLocation?.lat(), this.currentLocation?.lng())
+
     })
     // Send the closest markers to the map component
     if (km < 370) {
@@ -236,12 +234,11 @@ export class MapDialogComponent implements OnInit{
   }
 
   refreshMarkers($event: MatSliderChange) {
-    console.log($event!.value)
     let dateIndex = $event!.value;
+
     let intermediaryPosts = this.posts?.filter(value => value.date === this.dates[dateIndex!])
-    console.log(intermediaryPosts!.length)
+    console.log(intermediaryPosts)
     if (intermediaryPosts!.length > 0) {
-      console.log(intermediaryPosts![0])
       this.new_markers = this.markers!.filter(value =>
       {
         let coordinates = {lat: value.lat,lng :value.lng}
@@ -253,8 +250,6 @@ export class MapDialogComponent implements OnInit{
       }
       )
       this.new_posts = intermediaryPosts!;
-      console.log(intermediaryPosts![0])
-      console.log(this.markers)
     }
 
     else {this.new_markers = []}
@@ -270,7 +265,6 @@ export class MapDialogComponent implements OnInit{
   }
 
   getSliderLabel(value: number): string {
-    console.log(value)
     return this.dates[value];
   }
 }

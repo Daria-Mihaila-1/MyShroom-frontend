@@ -20,7 +20,7 @@ export class PostComponent implements OnInit {
   @Input() isInDialog: boolean | undefined;
   @Output() deletePostEvent = new EventEmitter<number>();
   @Output() updatePostEvent = new EventEmitter<void>();
-  @Output() reportPostEvent = new EventEmitter<Post[]>();
+  @Output() reportPostEvent = new EventEmitter<string>();
   data_uri: string|undefined;
   myUser : User | undefined;
   signature = {
@@ -80,8 +80,10 @@ export class PostComponent implements OnInit {
       reporterUserId:parseInt(localStorage.getItem('user')!),
       postId: this.post?.id!
     }
-    this.userService.report(reportPost).subscribe(result =>{
-      this.reportPostEvent.emit(result)
+    this.userService.report(reportPost).subscribe(result => {
+      this.reportPostEvent.emit(this.myUser!.userName)
+
+      this.snackbar.open("You have reported " + this.myUser!.userName + "'s post successfully!", "Ok")
     })
   }
 }

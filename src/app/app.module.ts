@@ -65,7 +65,7 @@ import {MatCheckboxModule} from "@angular/material/checkbox";
     ConfirmationDialogComponent,
     NotificationDialogComponent,
     ProfilePageComponent,
-    AvatarsDialogComponent
+    AvatarsDialogComponent,
   ],
   imports: [
     BrowserModule,

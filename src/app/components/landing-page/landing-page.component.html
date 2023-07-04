@@ -4,7 +4,7 @@
       <p>MyShroom Menu</p>
       <mat-list-item (click)="goToProfilePage()"><mat-icon>person</mat-icon>Profile</mat-list-item>
       <mat-list-item (click)="openPredictWindow()">  <img class="icon" src="assets/mushroom_predictor_mushroom_icon(2).svg"/>Check my mushroom</mat-list-item>
-      <mat-list-item (click)="openCreatePost()">Share your own Findings</mat-list-item>
+      <mat-list-item (click)="openCreatePost()"><img class="icon" src="assets/add-icon.png" > Share your Findings</mat-list-item>
       <mat-list-item (click)="signOut()">Sign out<mat-icon>exit_to_app</mat-icon></mat-list-item>
     </mat-nav-list>
   </mat-sidenav>
@@ -25,7 +25,7 @@
     <app-post [post]="post" [isInDialog]="false"
               (deletePostEvent)="deletePost($event)"
               (updatePostEvent)="refreshList($event)"
-              (reportPostEvent)="refreshList($event)"></app-post>
+              (reportPostEvent)="reportPost($event)"></app-post>
   </mat-grid-tile>
   </mat-grid-list>
     <button mat-icon-button (click)="goToTop()" style="position: fixed;bottom: 15px;

@@ -83,7 +83,6 @@ export class CreatePostComponent {
     if (localStorage.getItem('user'))
     {
       this.userId = parseInt(localStorage.getItem('user')!)
-      console.log(this.userId)
     }
   }
 
@@ -138,7 +137,6 @@ export class CreatePostComponent {
   {
     const valuesFromForm = this.createPostFormGroup.value;
     let errors : string = "";
-    console.log(this.location)
     if ( (valuesFromForm.postTitle=="" || valuesFromForm.postTitle==null) ||
       (valuesFromForm.description=="" || valuesFromForm.description==null) ||
       (valuesFromForm.genus=="" || valuesFromForm.genus==null) ||
@@ -167,7 +165,6 @@ export class CreatePostComponent {
     else {
       post_type = valuesFromForm.type!.toUpperCase()
     }
-    console.log(valuesFromForm.genus!.toUpperCase())
     if(errors=="")
     {
 
@@ -236,7 +233,6 @@ export class CreatePostComponent {
       selectedLocation.lat() <= this.ROMANIA_BOUNDS.north &&
       selectedLocation.lat() >= this.ROMANIA_BOUNDS.south
     ) {
-      console.log($event, "\n", $event.latLng)
       this.location = new google.maps.LatLng($event.latLng)
     }
     else {
@@ -245,9 +241,6 @@ export class CreatePostComponent {
   }
 }
   selectFile(event: any): void {
-
-
-    console.log("la inceput de selectFile")
 
 
     this.currentImg = event.addedFiles[0];
@@ -270,7 +263,6 @@ export class CreatePostComponent {
 
 
   onRemove(event: any) {
-    console.log(this.currentImg)
     this.currentImg = undefined;
     this.base64Img = ''
   }

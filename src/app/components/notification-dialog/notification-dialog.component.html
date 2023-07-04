@@ -1,7 +1,16 @@
-<h1 mat-dialog-title>{{this.data!.notificationTitle!}}</h1>
-<div mat-dialog-content>
-  {{this.data!.notificationMessage}}
+<div class="notificationDialog">
+  <h1 mat-dialog-title style="font-weight:bold;">{{this.data!.notificationTitle!}}</h1>
+<div mat-dialog-content style="display: flex; justify-content: center" class="notificationDialogContent">
+  <div *ngIf="splitData.length == 0">
+    {{this.data!.notificationMessage}}
+  </div>
+  <div *ngIf="splitData.length > 0" style="align-self: center;">
+    <p *ngFor="let line of splitData" style="text-align : center;">
+      {{line}}
+    </p>
+  </div>
 </div>
-<div mat-dialog-actions >
+<div mat-dialog-actions class="ok-actions">
   <button mat-button class="ok-btn" (click)="this.dialogRef.close()">Okay</button>
+</div>
 </div>
