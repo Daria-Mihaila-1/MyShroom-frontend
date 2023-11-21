@@ -43,15 +43,15 @@ import {MatSelectModule} from "@angular/material/select";
 import { ConfirmationDialogComponent } from './components/confirmation-dialog/confirmation-dialog.component';
 import { NotificationDialogComponent } from './components/notification-dialog/notification-dialog.component';
 import {ProfilePageComponent} from "./components/profile-page/profile-page.component";
-import {MatProgressBarModule} from "@angular/material/progress-bar";
 import {MatTooltipModule} from "@angular/material/tooltip";
 import {MaterialFileInputModule} from "ngx-material-file-input";
 import { AvatarsDialogComponent } from './components/register/avatars-dialog/avatars-dialog.component';
 import {ImageViewerModule} from "ngx-image-viewer";
 import {MatSliderModule} from "@angular/material/slider";
 import {MatCheckboxModule} from "@angular/material/checkbox";
-import {MatLegacyDialogModule} from "@angular/material/legacy-dialog";
-import {MatLegacyButtonModule} from "@angular/material/legacy-button";
+import {MatProgressBarModule} from "@angular/material/progress-bar";
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -97,6 +97,7 @@ import {MatLegacyButtonModule} from "@angular/material/legacy-button";
     MatAutocompleteModule,
     MatSidenavModule,
     FormsModule,
+
     MatProgressSpinnerModule,
     MatToolbarModule,
     MatTabsModule,
@@ -106,9 +107,7 @@ import {MatLegacyButtonModule} from "@angular/material/legacy-button";
     MaterialFileInputModule,
     ImageViewerModule,
     MatSliderModule,
-    MatCheckboxModule,
-    MatLegacyDialogModule,
-    MatLegacyButtonModule
+    MatCheckboxModule
 
   ],
   exports: [RouterModule],
