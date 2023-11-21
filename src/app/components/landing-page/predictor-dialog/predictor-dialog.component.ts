@@ -25,7 +25,7 @@ export class PredictorDialogComponent implements OnInit, AfterViewInit {
   prediction : Map<string, number> = new Map<string, number>();
   loading : boolean = false;
   predicted = false;
-  imgsMat : Map<string,MushroomImg[]> = new Map<string, MushroomImg[]>();
+  imgsMat : Map<string,Map<string, MushroomImg[]>> = new Map<string, Map<string, MushroomImg[]>>();
 
   @ViewChild(MatSidenavContent) matSidenavContent: MatSidenavContent | undefined;
   @ViewChild('sidenav') si: MatSidenavContent | undefined;
@@ -100,12 +100,28 @@ this.predicted = false;
 
             this.mushroomImgService.getMushroomsByGenus(key).subscribe( result=>
             {
-
+              let mushroomTypeMap = new Map<string, MushroomImg[]>();
+              mushroomTypeMap.set("nonedible", []);
+              mushroomTypeMap.set("edible", []);
                 result.forEach(value => {
                   let content_type = "data:image/jpg;base64"
                   value.base64Img = content_type + "," + value.base64Img;
+                  if (value.poisonous) {
+                    let imgArray = mushroomTypeMap.get("nonedible");
+                    if(imgArray) {
+                      console.log(value.base64Img.split(",")[0])
+                      imgArray.push(value)
+                    }
+                  }
+                  else {
+                    let imgArray = mushroomTypeMap.get("edible");
+                    if(imgArray) {
+                      console.log(value.base64Img.split(",")[0])
+                      imgArray.push(value)
+                    }
+                  }
                 })
-                this.imgsMat.set(key, result)
+                this.imgsMat.set(key, mushroomTypeMap)
               }
 
             )

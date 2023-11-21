@@ -50,6 +50,8 @@ import { AvatarsDialogComponent } from './components/register/avatars-dialog/ava
 import {ImageViewerModule} from "ngx-image-viewer";
 import {MatSliderModule} from "@angular/material/slider";
 import {MatCheckboxModule} from "@angular/material/checkbox";
+import {MatLegacyDialogModule} from "@angular/material/legacy-dialog";
+import {MatLegacyButtonModule} from "@angular/material/legacy-button";
 @NgModule({
   declarations: [
     AppComponent,
@@ -104,7 +106,9 @@ import {MatCheckboxModule} from "@angular/material/checkbox";
     MaterialFileInputModule,
     ImageViewerModule,
     MatSliderModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatLegacyDialogModule,
+    MatLegacyButtonModule
 
   ],
   exports: [RouterModule],

@@ -31,9 +31,9 @@
             <h2><b>Genus: <b>{{pred.key}} </b>  and Probability:  <b>{{pred.value}}%</b></b></h2>
             <h3 style="margin-top: 5px"><b>Edible</b> species from this genus:</h3>
             <div class="scrollable-grid-container">
-              <mat-grid-list cols="5" rowHeight="150px" style="width: 1000px" >
-                <mat-grid-tile *ngFor="let imageObject of this.imgsMat.get(pred.key) " class="imgToDisplayTile">
-                  <img *ngIf="!imageObject.poisonous" [src]="imageObject.base64Img" class="displayImg" alt="exampleImages">
+              <mat-grid-list cols="4" col rowHeight="150px" style="width:155%" >
+                <mat-grid-tile *ngFor="let imageObject of this.imgsMat.get(pred.key)!.get('edible')" class="imgToDisplayTile">
+                  <img  [src]="imageObject.base64Img" class="displayImg" alt="exampleImages">
 
                 </mat-grid-tile>
               </mat-grid-list>
@@ -42,9 +42,9 @@
 
             <div class="scrollable-grid-container">
 
-              <mat-grid-list cols="5" rowHeight="150px" style="width: 1000px" >
-                <mat-grid-tile *ngFor="let imageObject of this.imgsMat.get(pred.key) " class="imgToDisplayTile">
-                  <img *ngIf="imageObject.poisonous" [src]="imageObject.base64Img" class="displayImg" alt="exampleImages">
+              <mat-grid-list cols="4" rowHeight="150px" style="width:155%" >
+                <mat-grid-tile *ngFor="let imageObject of this.imgsMat.get(pred.key)!.get('nonedible') " class="imgToDisplayTile">
+                  <img  [src]="imageObject.base64Img" class="displayImg" alt="exampleImages">
 
                 </mat-grid-tile>
               </mat-grid-list>
